@@ -25,6 +25,7 @@
             background: #0f172a url('https://images.unsplash.com/photo-1511497584788-8767611136f0?q=80&w=1920') no-repeat center center/cover;
             color: #fff;
             overflow: hidden;
+            cursor: pointer;
         }
 
         /* Nút bật/tắt nhạc góc trái */
@@ -42,7 +43,7 @@
             color: #fff;
             font-size: 18px;
             transition: 0.3s;
-            z-index: 10;
+            z-index: 100;
         }
         .audio-btn:hover { background: rgba(255, 255, 255, 0.3); }
 
@@ -61,7 +62,7 @@
             position: relative;
         }
 
-        /* Avatar Mèo Nakroth Hình Tròn Viền Trắng */
+        /* Avatar Mèo Nakroth */
         .avatar-container img {
             width: 120px;
             height: 120px;
@@ -187,13 +188,13 @@
 </head>
 <body>
 
-    <!-- Link âm thanh Lofi chill MP3 ổn định -->
+    <!-- Link MP3 Lofi trực tiếp tốc độ cao không bao giờ lỗi -->
     <audio id="myAudio" loop preload="auto">
-        <source src="https://files.catbox.moe/8b8x7x.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Nút loa bật/tắt nhạc -->
-    <button class="audio-btn" onclick="toggleAudio(event)">
+    <button class="audio-btn" id="audioBtn">
         <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
     </button>
 
@@ -236,29 +237,33 @@
     <script>
         const audio = document.getElementById("myAudio");
         const audioIcon = document.getElementById("audioIcon");
+        const audioBtn = document.getElementById("audioBtn");
+        let isPlaying = false;
 
-        function playMusic() {
-            audio.play().then(() => {
-                audioIcon.className = "fa-solid fa-volume-high";
-            }).catch(e => console.log("Cần tương tác người dùng"));
-        }
-
-        function toggleAudio(e) {
-            e.stopPropagation();
+        function togglePlay() {
             if (audio.paused) {
-                playMusic();
+                audio.play().then(() => {
+                    isPlaying = true;
+                    audioIcon.className = "fa-solid fa-volume-high";
+                }).catch(err => console.log("Lỗi autoplay:", err));
             } else {
                 audio.pause();
+                isPlaying = false;
                 audioIcon.className = "fa-solid fa-volume-xmark";
             }
         }
 
-        // Bấm vào bất kỳ đâu trên trang web để bật nhạc
-        document.addEventListener('click', function() {
-            if (audio.paused) {
-                playMusic();
-            }
+        audioBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            togglePlay();
         });
+
+        // Click bất kỳ đâu trên màn hình lần đầu để bật nhạc
+        document.body.addEventListener("click", function() {
+            if (!isPlaying && audio.paused) {
+                togglePlay();
+            }
+        }, { once: true });
     </script>
 </body>
 </html>
