@@ -184,14 +184,21 @@
             align-items: center;
             gap: 5px;
         }
+
+        /* Ẩn hoàn toàn khung video YouTube */
+        #youtube-player {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Link MP3 Lofi Chill TikTok -->
-    <audio id="myAudio" loop preload="auto">
-        <source src="https://files.catbox.moe/97v3sp.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Khung ẩn để chạy nhạc từ YouTube của bạn -->
+    <div id="youtube-player"></div>
 
     <!-- Nút loa bật/tắt nhạc -->
     <button class="audio-btn" id="audioBtn">
@@ -234,22 +241,47 @@
         </div>
     </div>
 
+    <!-- Tải API YouTube Player -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <script>
-        const audio = document.getElementById("myAudio");
+        let player;
+        let isPlaying = false;
         const audioIcon = document.getElementById("audioIcon");
         const audioBtn = document.getElementById("audioBtn");
-        let isPlaying = false;
 
-        function togglePlay() {
-            if (audio.paused) {
-                audio.play().then(() => {
-                    isPlaying = true;
-                    audioIcon.className = "fa-solid fa-volume-high";
-                }).catch(err => console.log("Lỗi autoplay:", err));
-            } else {
-                audio.pause();
+        // Tạo trình phát nhạc YouTube ẩn sử dụng ID video của bạn (T2h5UH3SNjg)
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                videoId: 'T2h5UH3SNjg',
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'T2h5UH3SNjg'
+                },
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                audioIcon.className = "fa-solid fa-volume-high";
+            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
                 isPlaying = false;
                 audioIcon.className = "fa-solid fa-volume-xmark";
+            }
+        }
+
+        function togglePlay() {
+            if (!player || typeof player.playVideo !== 'function') return;
+            if (isPlaying) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
             }
         }
 
@@ -258,10 +290,10 @@
             togglePlay();
         });
 
-        // Click bất kỳ đâu trên màn hình để bật nhạc
+        // Click bất kỳ đâu trên màn hình lần đầu tiên để bật nhạc ngay
         document.body.addEventListener("click", function() {
-            if (!isPlaying && audio.paused) {
-                togglePlay();
+            if (!isPlaying && player && typeof player.playVideo === 'function') {
+                player.playVideo();
             }
         }, { once: true });
     </script>
