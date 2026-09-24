@@ -22,7 +22,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0f172a url('https://images.unsplash.com/photo-1511497584788-8767611136f0?q=80&w=1920') no-repeat center center/cover;
+            /* Thay hình nền đằng sau bằng hình GIF động bạn gửi */
+            background: #0f172a url('https://i.pinimg.com/originals/f9/57/6f/f9576fca9fc8ef79976a1d6327bbe9ae.gif') no-repeat center center/cover;
             color: #fff;
             overflow: hidden;
             cursor: pointer;
@@ -227,7 +228,7 @@
             </div>
         </div>
 
-        <!-- Mạng xã hội (ĐÃ FIX CHUẨN LINK DISCORD VÀ TIKTOK CỦA BẠN) -->
+        <!-- Mạng xã hội -->
         <div class="social-icons">
             <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
             <a href="https://discord.gg/tg7BTRZht" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
@@ -254,15 +255,20 @@
             player = new YT.Player('youtube-player', {
                 videoId: 'T2h5UH3SNjg',
                 playerVars: {
-                    'autoplay': 0,
+                    'autoplay': 1, /* Bật nhạc tự động ngay khi vào trang */
                     'controls': 0,
                     'loop': 1,
                     'playlist': 'T2h5UH3SNjg'
                 },
                 events: {
+                    'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
                 }
             });
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
         }
 
         function onPlayerStateChange(event) {
@@ -289,6 +295,7 @@
             togglePlay();
         });
 
+        // Tự động kích hoạt lại nếu trình duyệt chặn autoplay
         document.body.addEventListener("click", function() {
             if (!isPlaying && player && typeof player.playVideo === 'function') {
                 player.playVideo();
