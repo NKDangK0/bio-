@@ -185,14 +185,17 @@
             align-items: center;
             gap: 5px;
         }
+
+        /* Ẩn player nhạc SoundCloud */
+        #sc-player {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Nguồn nhạc MP3 Lofi không bị chặn -->
-    <audio id="myAudio" loop crossorigin="anonymous" preload="auto">
-        <source src="https://files.catbox.moe/8b8x7x.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Widget SoundCloud ẩn (Nhạc LofiChill 24/7) -->
+    <iframe id="sc-player" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1155981085&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false" allow="autoplay"></iframe>
 
     <!-- Nút loa bật/tắt nhạc -->
     <button class="audio-btn" id="audioBtn">
@@ -235,40 +238,48 @@
         </div>
     </div>
 
+    <!-- Tải API SoundCloud Player -->
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+
     <script>
-        const audio = document.getElementById("myAudio");
+        const iframe = document.getElementById('sc-player');
+        const widget = SC.Widget(iframe);
         const audioIcon = document.getElementById("audioIcon");
         const audioBtn = document.getElementById("audioBtn");
         let isPlaying = false;
 
-        function playMusic() {
-            audio.play().then(() => {
-                isPlaying = true;
-                audioIcon.className = "fa-solid fa-volume-high";
-            }).catch(e => console.log("Cần nhấp chuột vào màn hình"));
+        widget.bind(SC.Widget.Events.READY, function() {
+            widget.setVolume(100);
+        });
+
+        function toggleAudio() {
+            widget.isPaused(function(paused) {
+                if (paused) {
+                    widget.play();
+                    isPlaying = true;
+                    audioIcon.className = "fa-solid fa-volume-high";
+                } else {
+                    widget.pause();
+                    isPlaying = false;
+                    audioIcon.className = "fa-solid fa-volume-xmark";
+                }
+            });
         }
 
-        function pauseMusic() {
-            audio.pause();
-            isPlaying = false;
-            audioIcon.className = "fa-solid fa-volume-xmark";
-        }
-
+        /* Click trực tiếp nút loa */
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
-            if (isPlaying) {
-                pauseMusic();
-            } else {
-                playMusic();
-            }
+            toggleAudio();
         });
 
-        /* Nhấp chuột bất kỳ đâu trên màn hình lần đầu để kích hoạt nhạc */
-        document.addEventListener("click", function() {
+        /* Click bất kỳ điểm nào trên màn hình lần đầu để tự động bật nhạc */
+        document.body.addEventListener("click", function() {
             if (!isPlaying) {
-                playMusic();
+                widget.play();
+                isPlaying = true;
+                audioIcon.className = "fa-solid fa-volume-high";
             }
-        });
+        }, { once: true });
     </script>
 </body>
 </html>
