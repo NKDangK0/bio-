@@ -185,21 +185,14 @@
             align-items: center;
             gap: 5px;
         }
-
-        /* Ẩn iframe nhạc YouTube */
-        #youtube-player {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
 
-    <!-- Khung ẩn để chạy nhạc từ YouTube -->
-    <div id="youtube-player"></div>
+    <!-- Link nhạc Lofi trực tiếp chuẩn MP3 không bao giờ có quảng cáo -->
+    <audio id="myAudio" loop preload="auto">
+        <source src="https://api.hyra.pw/audio/lofi.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- Nút loa bật/tắt nhạc -->
     <button class="audio-btn" id="audioBtn">
@@ -228,7 +221,7 @@
             </div>
         </div>
 
-        <!-- Mạng xã hội (Đã fix chính xác link TikTok & Discord của bạn) -->
+        <!-- Mạng xã hội -->
         <div class="social-icons">
             <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
             <a href="https://discord.gg/tg7BTRZht" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
@@ -242,64 +235,39 @@
         </div>
     </div>
 
-    <!-- Tải API YouTube Player -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-
     <script>
-        let player;
-        let isPlaying = false;
+        const audio = document.getElementById("myAudio");
         const audioIcon = document.getElementById("audioIcon");
         const audioBtn = document.getElementById("audioBtn");
+        let isPlaying = false;
 
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                videoId: 'T2h5UH3SNjg',
-                playerVars: {
-                    'autoplay': 1,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'T2h5UH3SNjg'
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            event.target.playVideo();
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
+        function playAudio() {
+            audio.play().then(() => {
                 isPlaying = true;
                 audioIcon.className = "fa-solid fa-volume-high";
-            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-                isPlaying = false;
-                audioIcon.className = "fa-solid fa-volume-xmark";
-            }
+            }).catch(() => {});
         }
 
-        function togglePlay() {
-            if (!player || typeof player.playVideo !== 'function') return;
-            if (isPlaying) {
-                player.pauseVideo();
-            } else {
-                player.playVideo();
-            }
+        function pauseAudio() {
+            audio.pause();
+            isPlaying = false;
+            audioIcon.className = "fa-solid fa-volume-xmark";
         }
 
-        /* Click vào nút loa để bật/tắt nhạc */
+        /* Nút loa điều khiển bật/tắt */
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
-            togglePlay();
+            if (isPlaying) {
+                pauseAudio();
+            } else {
+                playAudio();
+            }
         });
 
-        /* Click bất kỳ đâu trên màn hình để bật nhạc (vượt qua rào cản Autoplay của trình duyệt) */
+        /* Vừa vào bấm 1 phát vào bất kỳ vị trí nào trên màn hình là phát nhạc ngay */
         document.body.addEventListener("click", function() {
-            if (!isPlaying && player && typeof player.playVideo === 'function') {
-                player.playVideo();
+            if (!isPlaying) {
+                playAudio();
             }
         });
     </script>
