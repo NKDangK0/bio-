@@ -61,14 +61,14 @@
             position: relative;
         }
 
-        /* Avatar Mèo Nakroth */
+        /* Avatar Mèo Nakroth Hình Tròn Viền Trắng Đẹp */
         .avatar-container img {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%; /* Tự động bo tròn thành hình tròn */
             object-fit: cover;
-            border: 3px solid rgba(88, 101, 242, 0.8);
-            box-shadow: 0 0 20px rgba(88, 101, 242, 0.5);
+            border: 4px solid #ffffff; /* Viền trắng dày giống trong ảnh mẫu */
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
         }
 
         /* Tên chính */
@@ -111,6 +111,7 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid #ffffff;
         }
 
         .online-dot {
@@ -186,7 +187,7 @@
 </head>
 <body>
 
-    <!-- Link âm thanh phát playlist chill nhạc TikTok -->
+    <!-- Link âm thanh nhạc chill -->
     <audio id="myAudio" loop preload="auto">
         <source src="https://stream.zeno.fm/f3v6288v08quv" type="audio/mpeg">
     </audio>
@@ -199,7 +200,7 @@
     <!-- Khung giao diện chính -->
     <div class="card">
         <div class="avatar-container">
-            <!-- Đã chèn ảnh mèo Nakroth của bạn -->
+            <!-- Ảnh mèo Nakroth dạng tròn viền trắng -->
             <img src="https://i.ibb.co/3kS0ZpL/images.jpg" alt="Mèo Nakroth">
         </div>
 
