@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - Khánh Đăng</title>
-    <!-- FontAwesome Icon & Google Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Thư viện FontAwesome Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -21,20 +22,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Ảnh nền dạ tối / rừng đêm */
-            background: url('https://images.unsplash.com/photo-1511497584788-8767611136f0?q=80&w=1920') no-repeat center center/cover;
+            background: #0f172a url('https://images.unsplash.com/photo-1511497584788-8767611136f0?q=80&w=1920') no-repeat center center/cover;
             color: #fff;
             overflow: hidden;
         }
 
-        /* Nút bật/tắt nhạc ở góc trên bên trái */
+        /* Nút bật/tắt nhạc góc trái */
         .audio-btn {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 12px;
             padding: 10px 14px;
             cursor: pointer;
@@ -43,65 +44,65 @@
             transition: 0.3s;
             z-index: 10;
         }
-        .audio-btn:hover { background: rgba(255, 255, 255, 0.4); }
+        .audio-btn:hover { background: rgba(255, 255, 255, 0.3); }
 
-        /* Card trung tâm Glassmorphism */
+        /* Khung kính mờ Glassmorphism */
         .card {
             width: 90%;
-            max-width: 450px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 30px;
+            max-width: 420px;
+            background: rgba(20, 25, 40, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 30px 25px;
             text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             position: relative;
         }
 
-        /* Avatar */
+        /* Avatar Mèo Nakroth */
         .avatar-container img {
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(88, 101, 242, 0.8);
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.5);
         }
 
         /* Tên chính */
         .name {
             font-family: 'Cinzel', serif;
             font-size: 28px;
-            color: #5865F2;
-            margin: 10px 0 5px 0;
-            text-shadow: 0 0 10px rgba(88, 101, 242, 0.5);
+            color: #00d2ff;
+            margin: 12px 0 4px 0;
+            text-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
         }
 
         .location {
             font-size: 13px;
-            color: #ddd;
+            color: #cbd5e1;
             margin-bottom: 20px;
         }
 
-        /* Khung Discord / Status */
+        /* Khung status Discord */
         .status-box {
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 15px;
-            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 16px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             gap: 12px;
             margin-bottom: 20px;
             text-align: left;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .status-avatar {
             position: relative;
-            width: 45px;
-            height: 45px;
+            width: 46px;
+            height: 46px;
             flex-shrink: 0;
         }
 
@@ -109,65 +110,74 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
+            object-fit: cover;
         }
 
         .online-dot {
-            width: 12px;
-            height: 12px;
+            width: 13px;
+            height: 13px;
             background: #23a55a;
             border-radius: 50%;
             position: absolute;
             bottom: 0;
             right: 0;
-            border: 2px solid #000;
+            border: 2px solid #1e1e1e;
         }
 
         .status-info h4 {
             font-size: 14px;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            color: #fff;
         }
 
         .status-info p {
             font-size: 11px;
-            color: #aaa;
+            color: #94a3b8;
         }
 
         .status-id {
             font-size: 10px;
-            color: #888;
+            color: #64748b;
             margin-top: 2px;
         }
 
-        /* Icon mạng xã hội */
+        /* Icon Mạng Xã Hội */
         .social-icons {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-bottom: 25px;
+            gap: 18px;
+            margin-bottom: 20px;
         }
 
         .social-icons a {
             color: #fff;
             font-size: 22px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: 0.3s;
             text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .social-icons a:hover {
-            transform: translateY(-3px);
-            color: #5865F2;
+            transform: translateY(-4px);
+            background: #5865F2;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
         }
 
         /* Lượt xem */
         .views {
             position: absolute;
-            bottom: 15px;
+            bottom: 12px;
             left: 20px;
             font-size: 12px;
-            color: #ccc;
+            color: #94a3b8;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -181,29 +191,29 @@
         <source src="https://stream.zeno.fm/f3v6288v08quv" type="audio/mpeg">
     </audio>
 
-    <!-- Nút bật/tắt loa ở góc trái -->
+    <!-- Nút loa bật/tắt nhạc -->
     <button class="audio-btn" onclick="toggleAudio()">
         <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
     </button>
 
-    <!-- Thẻ nội dung chính -->
+    <!-- Khung giao diện chính -->
     <div class="card">
         <div class="avatar-container">
-            <!-- Thay ảnh đại diện của bạn vào đây -->
-            <img src="https://i.pinimg.com/564x/8b/12/32/8b123282241e5e03f901193309a47321.jpg" alt="Avatar">
+            <!-- Đã chèn ảnh mèo Nakroth của bạn -->
+            <img src="https://i.ibb.co/3kS0ZpL/images.jpg" alt="Mèo Nakroth">
         </div>
 
         <h2 class="name">Khánh Đăng</h2>
-        <p class="location"><i class="fa-solid fa-location-dot"></i> Đồng Nai, Việt Nam</p>
+        <p class="location"><i class="fa-solid fa-location-dot"></i> Đồng Nai, Việt Nam[cite: 1]</p>
 
-        <!-- Khung trạng thái Discord -->
+        <!-- Trạng thái Discord -->
         <div class="status-box">
             <div class="status-avatar">
-                <img src="https://i.pinimg.com/564x/8b/12/32/8b123282241e5e03f901193309a47321.jpg" alt="Status Avatar">
+                <img src="https://i.ibb.co/3kS0ZpL/images.jpg" alt="Mèo Nakroth Status">
                 <div class="online-dot"></div>
             </div>
             <div class="status-info">
-                <h4>khanhdang. <span style="font-size: 10px; background: rgba(88, 101, 242, 0.4); padding: 2px 6px; border-radius: 4px;">DISCORD</span></h4>
+                <h4>khanhdang. <span style="font-size: 10px; background: rgba(88, 101, 242, 0.4); padding: 2px 6px; border-radius: 4px; color: #5865F2;">DISCORD</span></h4>
                 <p>currently doing nothing</p>
                 <div class="status-id"><i class="fa-solid fa-id-card"></i> ID: 1514256094090760322</div>
             </div>
@@ -212,7 +222,6 @@
         <!-- Mạng xã hội -->
         <div class="social-icons">
             <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
-            <!-- Link Discord Server của Khánh Đăng -->
             <a href="https://discord.gg/wmSBkvXEb" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
             <a href="https://tiktok.com" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
@@ -238,7 +247,7 @@
             }
         }
 
-        // Tự động bật nhạc ngay khi chạm/click vào bất kỳ đâu trên màn hình
+        // Tự động phát nhạc khi nhấp bất kỳ đâu trên màn hình
         document.body.addEventListener('click', function() {
             if (audio.paused) {
                 audio.play();
