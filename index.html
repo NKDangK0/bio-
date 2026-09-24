@@ -231,8 +231,8 @@
     </div>
 
     <script>
-        // Sử dụng Audio Object chuẩn trực tiếp từ CDN nhạc Lofi
-        const music = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3');
+        // Nhạc "Yêu Ai Để Không Phải Khóc" trích xuất trực tiếp MP3
+        const music = new Audio('https://files.catbox.moe/u6vpx6.mp3');
         music.loop = true;
 
         const audioBtn = document.getElementById("audioBtn");
@@ -249,18 +249,18 @@
                     isPlaying = true;
                     audioIcon.className = "fa-solid fa-volume-high";
                 }).catch(err => {
-                    console.log("Trình duyệt yêu cầu tương tác trước");
+                    console.log("Cần nhấp chuột vào trang trước");
                 });
             }
         }
 
-        // Bấm nút loa để bật/tắt chuẩn 100%
+        // Click nút loa để bật/tắt
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
             togglePlay();
         });
 
-        // Tự động bật nhạc ngay khi nhấp vào bất kỳ vị trí nào trên web
+        // Click bất kỳ đâu trên trang để khởi động phát nhạc ngay lập tức
         document.body.addEventListener("click", function() {
             if (!isPlaying) {
                 togglePlay();
