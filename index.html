@@ -22,7 +22,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Thay hình nền đằng sau bằng hình GIF động bạn gửi */
+            /* Hình nền GIF động nghệ thuật */
             background: #0f172a url('https://i.pinimg.com/originals/f9/57/6f/f9576fca9fc8ef79976a1d6327bbe9ae.gif') no-repeat center center/cover;
             color: #fff;
             overflow: hidden;
@@ -186,7 +186,7 @@
             gap: 5px;
         }
 
-        /* Ẩn hoàn toàn khung video YouTube */
+        /* Ẩn iframe nhạc YouTube */
         #youtube-player {
             position: absolute;
             width: 1px;
@@ -228,11 +228,11 @@
             </div>
         </div>
 
-        <!-- Mạng xã hội -->
+        <!-- Mạng xã hội (Đã fix chính xác link TikTok & Discord của bạn) -->
         <div class="social-icons">
             <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
             <a href="https://discord.gg/tg7BTRZht" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
-            <a href="https://www.tiktok.com/@_khanhdang_" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://www.tiktok.com/@_k...dang_" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
         </div>
 
@@ -255,7 +255,7 @@
             player = new YT.Player('youtube-player', {
                 videoId: 'T2h5UH3SNjg',
                 playerVars: {
-                    'autoplay': 1, /* Bật nhạc tự động ngay khi vào trang */
+                    'autoplay': 1,
                     'controls': 0,
                     'loop': 1,
                     'playlist': 'T2h5UH3SNjg'
@@ -290,17 +290,18 @@
             }
         }
 
+        /* Click vào nút loa để bật/tắt nhạc */
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
             togglePlay();
         });
 
-        // Tự động kích hoạt lại nếu trình duyệt chặn autoplay
+        /* Click bất kỳ đâu trên màn hình để bật nhạc (vượt qua rào cản Autoplay của trình duyệt) */
         document.body.addEventListener("click", function() {
             if (!isPlaying && player && typeof player.playVideo === 'function') {
                 player.playVideo();
             }
-        }, { once: true });
+        });
     </script>
 </body>
 </html>
