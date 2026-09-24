@@ -34,19 +34,19 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 12px;
-            padding: 10px 14px;
+            padding: 12px 16px;
             cursor: pointer;
             color: #fff;
-            font-size: 18px;
+            font-size: 20px;
             transition: 0.3s;
-            z-index: 100;
+            z-index: 999;
         }
-        .audio-btn:hover { background: rgba(255, 255, 255, 0.3); }
+        .audio-btn:hover { background: rgba(255, 255, 255, 0.4); }
 
         /* Khung kính mờ Glassmorphism */
         .card {
@@ -189,9 +189,9 @@
 </head>
 <body>
 
-    <!-- Link nhạc Lofi trực tiếp chuẩn MP3 không bao giờ có quảng cáo -->
-    <audio id="myAudio" loop preload="auto">
-        <source src="https://api.hyra.pw/audio/lofi.mp3" type="audio/mpeg">
+    <!-- Nguồn nhạc MP3 Lofi không bị chặn -->
+    <audio id="myAudio" loop crossorigin="anonymous" preload="auto">
+        <source src="https://files.catbox.moe/8b8x7x.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Nút loa bật/tắt nhạc -->
@@ -241,33 +241,32 @@
         const audioBtn = document.getElementById("audioBtn");
         let isPlaying = false;
 
-        function playAudio() {
+        function playMusic() {
             audio.play().then(() => {
                 isPlaying = true;
                 audioIcon.className = "fa-solid fa-volume-high";
-            }).catch(() => {});
+            }).catch(e => console.log("Cần nhấp chuột vào màn hình"));
         }
 
-        function pauseAudio() {
+        function pauseMusic() {
             audio.pause();
             isPlaying = false;
             audioIcon.className = "fa-solid fa-volume-xmark";
         }
 
-        /* Nút loa điều khiển bật/tắt */
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
             if (isPlaying) {
-                pauseAudio();
+                pauseMusic();
             } else {
-                playAudio();
+                playMusic();
             }
         });
 
-        /* Vừa vào bấm 1 phát vào bất kỳ vị trí nào trên màn hình là phát nhạc ngay */
-        document.body.addEventListener("click", function() {
+        /* Nhấp chuột bất kỳ đâu trên màn hình lần đầu để kích hoạt nhạc */
+        document.addEventListener("click", function() {
             if (!isPlaying) {
-                playAudio();
+                playMusic();
             }
         });
     </script>
