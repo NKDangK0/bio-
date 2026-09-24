@@ -197,7 +197,7 @@
 </head>
 <body>
 
-    <!-- Khung ẩn để chạy nhạc từ YouTube của bạn -->
+    <!-- Khung ẩn để chạy nhạc từ YouTube -->
     <div id="youtube-player"></div>
 
     <!-- Nút loa bật/tắt nhạc -->
@@ -227,11 +227,11 @@
             </div>
         </div>
 
-        <!-- Mạng xã hội -->
+        <!-- Mạng xã hội (Đã cập nhật đúng link Discord & TikTok mới) -->
         <div class="social-icons">
             <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
-            <a href="https://discord.gg/wmSBkvXEb" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
-            <a href="https://tiktok.com" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://discord.gg/tg7BTRZht" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
+            <a href="https://www.tiktok.com/@_k...dang_" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
         </div>
 
@@ -250,7 +250,6 @@
         const audioIcon = document.getElementById("audioIcon");
         const audioBtn = document.getElementById("audioBtn");
 
-        // Tạo trình phát nhạc YouTube ẩn sử dụng ID video của bạn (T2h5UH3SNjg)
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
                 videoId: 'T2h5UH3SNjg',
@@ -290,7 +289,6 @@
             togglePlay();
         });
 
-        // Click bất kỳ đâu trên màn hình lần đầu tiên để bật nhạc ngay
         document.body.addEventListener("click", function() {
             if (!isPlaying && player && typeof player.playVideo === 'function') {
                 player.playVideo();
