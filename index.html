@@ -253,12 +253,12 @@
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
-                videoId: 'bRjbXX7azr8', // ID video "Yêu Ai Để Không Phải Khóc"
+                videoId: 'WZ5AbWd6gC4', // ID video Nhạc Lofi Chill Hot TikTok
                 playerVars: {
                     'autoplay': 0,
                     'controls': 0,
                     'loop': 1,
-                    'playlist': 'bRjbXX7azr8',
+                    'playlist': 'WZ5AbWd6gC4',
                     'rel': 0
                 },
                 events: {
@@ -292,7 +292,7 @@
             togglePlay();
         });
 
-        // Tự động bật ngay khi click bất cứ đâu trên web
+        // Tự động bật ngay khi nhấp bất kỳ đâu trên web
         document.body.addEventListener("click", function() {
             if (!isPlaying && player && typeof player.playVideo === 'function') {
                 player.playVideo();
