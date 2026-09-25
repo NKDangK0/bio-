@@ -189,9 +189,9 @@
 </head>
 <body>
 
-    <!-- Thẻ Audio HTML5 cực kỳ ổn định -->
+    <!-- Thẻ Audio MP3 trích xuất từ đúng video YouTube WZ5AbWd6gC4 -->
     <audio id="myAudio" loop preload="auto">
-        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+        <source src="https://files.catbox.moe/u6vpx6.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Nút loa bật/tắt nhạc -->
@@ -251,12 +251,12 @@
                     audioIcon.className = "fa-solid fa-volume-high";
                     isPlaying = true;
                 }).catch(e => {
-                    console.log("Cần tương tác với trang web trước.");
+                    console.log("Cần nhấp chuột vào trang trước.");
                 });
             }
         }
 
-        // Bấm trực tiếp vào nút loa
+        // Bấm trực tiếp nút loa để bật/tắt
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
             togglePlay();
