@@ -185,21 +185,14 @@
             align-items: center;
             gap: 5px;
         }
-
-        /* Ẩn hoàn toàn khung YouTube */
-        #yt-player {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
 
-    <!-- Trình phát YouTube ẩn chuẩn API -->
-    <div id="yt-player"></div>
+    <!-- Thẻ Audio HTML5 cực kỳ ổn định -->
+    <audio id="myAudio" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- Nút loa bật/tắt nhạc -->
     <button class="audio-btn" id="audioBtn">
@@ -242,62 +235,39 @@
         </div>
     </div>
 
-    <!-- Load YouTube Iframe API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-
     <script>
-        let player;
-        let isPlaying = false;
+        const audio = document.getElementById("myAudio");
         const audioBtn = document.getElementById("audioBtn");
         const audioIcon = document.getElementById("audioIcon");
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                videoId: 'WZ5AbWd6gC4', // ID video Nhạc Lofi Chill Hot TikTok
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'WZ5AbWd6gC4',
-                    'rel': 0
-                },
-                events: {
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                isPlaying = true;
-                audioIcon.className = "fa-solid fa-volume-high";
-            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-                isPlaying = false;
-                audioIcon.className = "fa-solid fa-volume-xmark";
-            }
-        }
+        let isPlaying = false;
 
         function togglePlay() {
-            if (!player || typeof player.playVideo !== 'function') return;
             if (isPlaying) {
-                player.pauseVideo();
+                audio.pause();
+                audioIcon.className = "fa-solid fa-volume-xmark";
+                isPlaying = false;
             } else {
-                player.playVideo();
+                audio.play().then(() => {
+                    audioIcon.className = "fa-solid fa-volume-high";
+                    isPlaying = true;
+                }).catch(e => {
+                    console.log("Cần tương tác với trang web trước.");
+                });
             }
         }
 
-        // Bấm nút loa để bật/tắt
+        // Bấm trực tiếp vào nút loa
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
             togglePlay();
         });
 
-        // Tự động bật ngay khi nhấp bất kỳ đâu trên web
+        // Click bất kỳ đâu trên màn hình để bật nhạc ngay lập tức
         document.body.addEventListener("click", function() {
-            if (!isPlaying && player && typeof player.playVideo === 'function') {
-                player.playVideo();
+            if (!isPlaying) {
+                togglePlay();
             }
-        });
+        }, { once: true });
     </script>
 </body>
 </html>
