@@ -189,10 +189,8 @@
 </head>
 <body>
 
-    <!-- Thẻ Audio MP3 trích xuất từ đúng video YouTube WZ5AbWd6gC4 -->
-    <audio id="myAudio" loop preload="auto">
-        <source src="https://files.catbox.moe/u6vpx6.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Link nhạc Remix TikTok cực cuốn và load siêu nhanh -->
+    <audio id="myAudio" loop preload="auto" src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
 
     <!-- Nút loa bật/tắt nhạc -->
     <button class="audio-btn" id="audioBtn">
@@ -250,19 +248,19 @@
                 audio.play().then(() => {
                     audioIcon.className = "fa-solid fa-volume-high";
                     isPlaying = true;
-                }).catch(e => {
-                    console.log("Cần nhấp chuột vào trang trước.");
+                }).catch(err => {
+                    console.log("Cần nhấp vào trang để phát nhạc");
                 });
             }
         }
 
-        // Bấm trực tiếp nút loa để bật/tắt
+        // Bấm trực tiếp vào nút loa
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
             togglePlay();
         });
 
-        // Click bất kỳ đâu trên màn hình để bật nhạc ngay lập tức
+        // Tự bật nhạc ngay khi nhấp bất kỳ đâu trên web
         document.body.addEventListener("click", function() {
             if (!isPlaying) {
                 togglePlay();
