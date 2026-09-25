@@ -185,9 +185,21 @@
             align-items: center;
             gap: 5px;
         }
+
+        /* Ẩn hoàn toàn khung YouTube */
+        #yt-player {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Trình phát YouTube ẩn chuẩn API -->
+    <div id="yt-player"></div>
 
     <!-- Nút loa bật/tắt nhạc -->
     <button class="audio-btn" id="audioBtn">
@@ -230,42 +242,62 @@
         </div>
     </div>
 
-    <script>
-        // Nhạc "Yêu Ai Để Không Phải Khóc" trích xuất trực tiếp MP3
-        const music = new Audio('https://files.catbox.moe/u6vpx6.mp3');
-        music.loop = true;
+    <!-- Load YouTube Iframe API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
+    <script>
+        let player;
+        let isPlaying = false;
         const audioBtn = document.getElementById("audioBtn");
         const audioIcon = document.getElementById("audioIcon");
-        let isPlaying = false;
 
-        function togglePlay() {
-            if (isPlaying) {
-                music.pause();
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player', {
+                videoId: 'bRjbXX7azr8', // ID video "Yêu Ai Để Không Phải Khóc"
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'bRjbXX7azr8',
+                    'rel': 0
+                },
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                audioIcon.className = "fa-solid fa-volume-high";
+            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
                 isPlaying = false;
                 audioIcon.className = "fa-solid fa-volume-xmark";
-            } else {
-                music.play().then(() => {
-                    isPlaying = true;
-                    audioIcon.className = "fa-solid fa-volume-high";
-                }).catch(err => {
-                    console.log("Cần nhấp chuột vào trang trước");
-                });
             }
         }
 
-        // Click nút loa để bật/tắt
+        function togglePlay() {
+            if (!player || typeof player.playVideo !== 'function') return;
+            if (isPlaying) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        }
+
+        // Bấm nút loa để bật/tắt
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
             togglePlay();
         });
 
-        // Click bất kỳ đâu trên trang để khởi động phát nhạc ngay lập tức
+        // Tự động bật ngay khi click bất cứ đâu trên web
         document.body.addEventListener("click", function() {
-            if (!isPlaying) {
-                togglePlay();
+            if (!isPlaying && player && typeof player.playVideo === 'function') {
+                player.playVideo();
             }
-        }, { once: true });
+        });
     </script>
 </body>
 </html>
