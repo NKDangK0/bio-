@@ -28,7 +28,7 @@
             position: relative;
         }
 
-        /* NÚT LOA CÔ LẬP TRÊN CÙNG */
+        /* NÚT LOA CÔ LẬP NẰM TRÊN CÙNG */
         .audio-btn {
             position: fixed;
             top: 25px;
@@ -224,17 +224,30 @@
             align-items: center;
             gap: 5px;
         }
+
+        /* KHUNG CHỨA YOUTUBE PLAYER ẨN NỀN */
+        #yt-player-container {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            left: -9999px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Khung phát YouTube ẩn -->
+    <div id="yt-player-container">
+        <div id="player"></div>
+    </div>
 
     <!-- Nút Loa Bật/Tắt Nhạc -->
     <div class="audio-btn" id="audioBtn">
         <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
     </div>
-
-    <!-- Link MP3 Lofi Trực Tiếp Mượt Mà không bao giờ lỗi -->
-    <audio id="bgMusic" loop preload="auto" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
 
     <div class="card">
         <!-- Khung chứa Avatar & Frame Discord -->
@@ -341,33 +354,51 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Script Bật/Tắt Nhạc Chuẩn 100% -->
+    <!-- Nạp Thư viện YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const audio = document.getElementById("bgMusic");
+        let ytPlayer;
+        let isMusicPlaying = false;
         const audioBtn = document.getElementById("audioBtn");
         const audioIcon = document.getElementById("audioIcon");
 
-        let isPlaying = false;
-
-        async function toggleAudio() {
-            if (!isPlaying) {
-                try {
-                    await audio.play();
-                    isPlaying = true;
-                    audioIcon.className = "fa-solid fa-volume-high";
-                } catch (err) {
-                    console.log("Lỗi khi phát nhạc:", err);
+        // Khởi tạo player với Video ID của bạn
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('player', {
+                height: '0',
+                width: '0',
+                videoId: '9ft6swZMGzM', // ID video nhạc bạn vừa đưa
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': '9ft6swZMGzM'
+                },
+                events: {
+                    'onStateChange': onPlayerStateChange
                 }
-            } else {
-                audio.pause();
-                isPlaying = false;
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                isMusicPlaying = true;
+                audioIcon.className = "fa-solid fa-volume-high";
+            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+                isMusicPlaying = false;
                 audioIcon.className = "fa-solid fa-volume-xmark";
             }
         }
 
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
-            toggleAudio();
+            if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
+
+            if (isMusicPlaying) {
+                ytPlayer.pauseVideo();
+            } else {
+                ytPlayer.playVideo();
+            }
         });
     </script>
 </body>
