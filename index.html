@@ -25,7 +25,6 @@
             background: #0f172a url('https://i.pinimg.com/originals/f9/57/6f/f9576fca9fc8ef79976a1d6327bbe9ae.gif') no-repeat center center/cover;
             color: #fff;
             overflow: hidden;
-            cursor: pointer;
         }
 
         /* Nút loa góc trái */
@@ -45,7 +44,10 @@
             transition: 0.3s;
             z-index: 999;
         }
-        .audio-btn:hover { background: rgba(255, 255, 255, 0.4); }
+        .audio-btn:hover { 
+            background: rgba(255, 255, 255, 0.4); 
+            transform: scale(1.05);
+        }
 
         /* Khung kính mờ Glassmorphism */
         .card {
@@ -91,7 +93,7 @@
             display: none;
         }
 
-        /* TÊN ĐƯỢC CHUYỂN THÀNH LINK DISCORD */
+        /* LINK MỞ HỒ SƠ DISCORD */
         .name-link {
             text-decoration: none;
             display: inline-block;
@@ -212,23 +214,17 @@
             align-items: center;
             gap: 5px;
         }
-
-        #youtube-player {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0.01;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
 
-    <div id="youtube-player"></div>
-
+    <!-- Nút Loa Bật/Tắt Nhạc -->
     <button class="audio-btn" id="audioBtn">
         <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
     </button>
+
+    <!-- Thẻ Audio HTML5 Phát Nhạc Trực Tiếp Mượt Mà -->
+    <audio id="bgMusic" loop src="https://files.catbox.moe/k33r2m.mp3"></audio>
 
     <div class="card">
         <!-- Khung chứa Avatar & Frame Discord -->
@@ -281,7 +277,7 @@
                     const data = res.data;
                     const user = data.discord_user;
 
-                    // 1. Đồng bộ Tên hiển thị Discord
+                    // 1. Tên hiển thị Discord
                     const nameElem = document.getElementById('displayName');
                     if (user.global_name) {
                         nameElem.innerText = user.global_name;
@@ -289,14 +285,14 @@
                         nameElem.innerText = user.username;
                     }
 
-                    // 2. Đồng bộ Avatar
+                    // 2. Avatar Discord
                     if (user.avatar) {
                         const avatarUrl = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256`;
                         document.getElementById('userAvatar').src = avatarUrl;
                         document.getElementById('smallAvatar').src = avatarUrl;
                     }
 
-                    // 3. Đồng bộ Khung trang trí (Avatar Decoration)
+                    // 3. Khung trang trí (Avatar Decoration)
                     if (user.avatar_decoration_data) {
                         const frameAsset = user.avatar_decoration_data.asset;
                         const frameUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${frameAsset}.png`;
@@ -335,59 +331,34 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Script Xử Lý Phát Nhạc Nhẹ Nhàng & Không Bị Chặn -->
     <script>
-        let player;
-        let isPlaying = false;
+        const audio = document.getElementById("bgMusic");
         const audioBtn = document.getElementById("audioBtn");
         const audioIcon = document.getElementById("audioIcon");
 
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                videoId: 'WZ5AbWd6gC4',
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'WZ5AbWd6gC4',
-                    'start': 5
-                },
-                events: {
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                isPlaying = true;
-                audioIcon.className = "fa-solid fa-volume-high";
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    audioIcon.className = "fa-solid fa-volume-high";
+                }).catch(err => console.log("Cần tương tác để phát nhạc:", err));
             } else {
-                isPlaying = false;
+                audio.pause();
                 audioIcon.className = "fa-solid fa-volume-xmark";
-            }
-        }
-
-        function toggleAudio() {
-            if (!player || typeof player.playVideo !== 'function') return;
-            if (isPlaying) {
-                player.pauseVideo();
-            } else {
-                if (player.getCurrentTime() < 5) player.seekTo(5, true);
-                player.playVideo();
             }
         }
 
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
-            toggleAudio();
+            togglePlay();
         });
 
-        document.body.addEventListener("click", function() {
-            if (!isPlaying && player && typeof player.playVideo === 'function') {
-                if (player.getCurrentTime() < 5) player.seekTo(5, true);
-                player.playVideo();
+        // Bấm bất kỳ đâu trên màn hình lần đầu tiên cũng sẽ tự bật nhạc
+        document.body.addEventListener("click", function startOnFirstClick() {
+            if (audio.paused) {
+                togglePlay();
             }
+            document.body.removeEventListener("click", startOnFirstClick);
         });
     </script>
 </body>
