@@ -200,7 +200,7 @@
             box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
         }
 
-        /* TRÌNH PHÁT NHẠC CUSTOM ĐẸP MẮT */
+        /* TRÌNH PHÁT NHẠC */
         .music-player-box {
             background: rgba(0, 0, 0, 0.45);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -312,7 +312,7 @@
             box-shadow: 0 0 18px rgba(0, 210, 255, 0.8);
         }
 
-        /* ẨN HOÀN TOÀN KHUNG YOUTUBE NHƯNG VẪN ĐẢM BẢO ÂM THANH CHẠY */
+        /* ẨN KHUNG YOUTUBE NỀN */
         .yt-hidden {
             position: absolute;
             width: 1px;
@@ -372,7 +372,7 @@
                 <div class="music-title" title="Như Một Người Dưng Lofi">Như Một Người Dưng Lofi...</div>
                 
                 <div class="progress-container">
-                    <span class="time-text" id="currentTime">51:56</span>
+                    <span class="time-text" id="currentTime">0:00</span>
                     <div class="progress-bar" id="progressBar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
@@ -390,7 +390,7 @@
         </div>
     </div>
 
-    <!-- Khung YouTube Ẩn Nhẹ Nhàng -->
+    <!-- Khung YouTube Ẩn -->
     <div class="yt-hidden">
         <div id="player"></div>
     </div>
@@ -456,7 +456,7 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- YouTube API Script Phát Nhạc Trực Tiếp Video bRjbXX7azr8 -->
+    <!-- YouTube API Script Phát Từ Đầu (0s) -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
@@ -476,7 +476,7 @@
                 width: '200',
                 videoId: 'bRjbXX7azr8',
                 playerVars: {
-                    'start': 3116,
+                    'start': 0,
                     'autoplay': 0,
                     'controls': 0
                 },
@@ -490,6 +490,7 @@
         function onPlayerReady(event) {
             ytPlayer.unMute();
             ytPlayer.setVolume(100);
+            ytPlayer.seekTo(0, true);
         }
 
         function formatTime(seconds) {
