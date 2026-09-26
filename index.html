@@ -41,7 +41,7 @@
             position: relative;
         }
 
-        /* BANNER VIDEO/GIF PHÍA TRÊN */
+        /* BANNER ANIME PHÍA TRÊN */
         .banner-box {
             position: relative;
             width: 100%;
@@ -311,20 +311,12 @@
             color: #00d2ff;
             box-shadow: 0 0 18px rgba(0, 210, 255, 0.8);
         }
-
-        /* ẨN KHUNG YOUTUBE NỀN */
-        .yt-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            top: -9999px;
-            left: -9999px;
-            opacity: 0.01;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
+
+    <!-- FILE AUDIO NHẠC NỀN LOFI -->
+    <audio id="bgAudio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" preload="auto"></audio>
 
     <div class="card">
         <!-- BANNER ANIME ĐỘNG -->
@@ -343,6 +335,7 @@
                 <img class="avatar-frame" id="userFrame" src="" alt="Decoration">
             </div>
             <div class="user-info">
+                <!-- Bấm vào tên để xem Profile Discord -->
                 <a href="https://discord.com/users/1514256094090760322" target="_blank" class="name-link">
                     <h2 class="name" id="displayName">khanhdang.</h2>
                 </a>
@@ -364,19 +357,19 @@
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
         </div>
 
-        <!-- TRÌNH PHÁT NHẠC -->
+        <!-- TRÌNH PHÁT NHẠC GỌN ĐẸP -->
         <div class="music-player-box">
             <img class="music-cover" src="./images.ico" alt="Mèo Nakroth">
             
             <div class="music-details">
-                <div class="music-title" title="Như Một Người Dưng Lofi">Như Một Người Dưng Lofi...</div>
+                <div class="music-title" title="Giải Cứu Thế Giới x Đi Khắp...">Giải Cứu Thế Giới x Đi Khắp...</div>
                 
                 <div class="progress-container">
                     <span class="time-text" id="currentTime">0:00</span>
                     <div class="progress-bar" id="progressBar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
-                    <span class="time-text" id="durationTime">1:03:15</span>
+                    <span class="time-text" id="durationTime">2:27</span>
                 </div>
             </div>
 
@@ -388,11 +381,6 @@
                 <button class="control-btn"><i class="fa-solid fa-forward-step"></i></button>
             </div>
         </div>
-    </div>
-
-    <!-- Khung YouTube Ẩn -->
-    <div class="yt-hidden">
-        <div id="player"></div>
     </div>
 
     <!-- Script kết nối API Discord (Lanyard) -->
@@ -456,42 +444,15 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- YouTube API Script Phát Từ Đầu (0s) -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Script Điều khiển Phát Nhạc -->
     <script>
-        let ytPlayer;
-        let isPlaying = false;
-        let timerInterval;
-
+        const audio = document.getElementById("bgAudio");
         const playBtn = document.getElementById("playBtn");
         const playIcon = document.getElementById("playIcon");
         const currentTimeElem = document.getElementById("currentTime");
         const durationTimeElem = document.getElementById("durationTime");
         const progressFill = document.getElementById("progressFill");
         const progressBar = document.getElementById("progressBar");
-
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('player', {
-                height: '200',
-                width: '200',
-                videoId: 'bRjbXX7azr8',
-                playerVars: {
-                    'start': 0,
-                    'autoplay': 0,
-                    'controls': 0
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            ytPlayer.unMute();
-            ytPlayer.setVolume(100);
-            ytPlayer.seekTo(0, true);
-        }
 
         function formatTime(seconds) {
             if (isNaN(seconds)) return "0:00";
@@ -500,47 +461,36 @@
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        function updateProgress() {
-            if (ytPlayer && typeof ytPlayer.getCurrentTime === 'function') {
-                const current = ytPlayer.getCurrentTime();
-                const total = ytPlayer.getDuration() || 3795;
-                currentTimeElem.innerText = formatTime(current);
-                durationTimeElem.innerText = formatTime(total);
+        audio.addEventListener("loadedmetadata", function() {
+            durationTimeElem.innerText = formatTime(audio.duration);
+        });
 
-                const percent = (current / total) * 100;
+        audio.addEventListener("timeupdate", function() {
+            currentTimeElem.innerText = formatTime(audio.currentTime);
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
                 progressFill.style.width = `${percent}%`;
             }
-        }
+        });
 
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                isPlaying = true;
+        playBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            if (audio.paused) {
+                audio.play();
                 playIcon.className = "fa-solid fa-pause";
-                timerInterval = setInterval(updateProgress, 1000);
             } else {
-                isPlaying = false;
+                audio.pause();
                 playIcon.className = "fa-solid fa-play";
-                clearInterval(timerInterval);
-            }
-        }
-
-        playBtn.addEventListener("click", function() {
-            if (!ytPlayer) return;
-            if (isPlaying) {
-                ytPlayer.pauseVideo();
-            } else {
-                ytPlayer.playVideo();
             }
         });
 
         progressBar.addEventListener("click", function(e) {
-            if (!ytPlayer || typeof ytPlayer.getDuration !== 'function') return;
             const rect = progressBar.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const width = rect.width;
-            const total = ytPlayer.getDuration();
-            const seekTime = (clickX / width) * total;
-            ytPlayer.seekTo(seekTime, true);
+            if (audio.duration) {
+                audio.currentTime = (clickX / width) * audio.duration;
+            }
         });
     </script>
 </body>
