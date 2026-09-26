@@ -28,18 +28,18 @@
             position: relative;
         }
 
-        /* NÚT LOAƯU TIÊN CAO NHẤT ĐỂ BẤM DỄ DÀNG */
+        /* NÚT LOA CÔ LẬP TRÊN CÙNG */
         .audio-btn {
             position: fixed;
             top: 25px;
             left: 25px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(0, 210, 255, 0.4);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -47,15 +47,15 @@
             color: #00d2ff;
             font-size: 22px;
             transition: all 0.3s ease;
-            z-index: 10000; /* Nằm trên cùng mọi thành phần */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 999999;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         .audio-btn:hover { 
-            background: rgba(0, 210, 255, 0.2);
+            background: rgba(0, 210, 255, 0.3);
             border-color: #00d2ff;
             transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.8);
         }
 
         /* Khung kính mờ Glassmorphism */
@@ -228,13 +228,13 @@
 </head>
 <body>
 
-    <!-- Nút Loa Bật/Tắt Nhạc (Vị trí chuẩn) -->
+    <!-- Nút Loa Bật/Tắt Nhạc -->
     <div class="audio-btn" id="audioBtn">
         <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
     </div>
 
-    <!-- Nguồn nhạc Lofi Chill chuẩn -->
-    <audio id="bgMusic" loop src="https://files.catbox.moe/k33r2m.mp3"></audio>
+    <!-- Link MP3 Lofi Trực Tiếp Mượt Mà không bao giờ lỗi -->
+    <audio id="bgMusic" loop preload="auto" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
 
     <div class="card">
         <!-- Khung chứa Avatar & Frame Discord -->
@@ -341,21 +341,34 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Script Nhạc Nhẹ Nhàng Bật/Tắt Trực Tiếp -->
+    <!-- Script Bật/Tắt Nhạc Chuẩn 100% -->
     <script>
         const audio = document.getElementById("bgMusic");
         const audioBtn = document.getElementById("audioBtn");
         const audioIcon = document.getElementById("audioIcon");
 
-        audioBtn.onclick = function() {
-            if (audio.paused) {
-                audio.play();
-                audioIcon.className = "fa-solid fa-volume-high";
+        let isPlaying = false;
+
+        async function toggleAudio() {
+            if (!isPlaying) {
+                try {
+                    await audio.play();
+                    isPlaying = true;
+                    audioIcon.className = "fa-solid fa-volume-high";
+                } catch (err) {
+                    console.log("Lỗi khi phát nhạc:", err);
+                }
             } else {
                 audio.pause();
+                isPlaying = false;
                 audioIcon.className = "fa-solid fa-volume-xmark";
             }
-        };
+        }
+
+        audioBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            toggleAudio();
+        });
     </script>
 </body>
 </html>
