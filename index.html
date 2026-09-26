@@ -88,7 +88,13 @@
             width: 130px;
             height: 130px;
             pointer-events: none;
-            display: none; /* Hiện khi có khung */
+            display: none;
+        }
+
+        /* TÊN ĐƯỢC CHUYỂN THÀNH LINK DISCORD */
+        .name-link {
+            text-decoration: none;
+            display: inline-block;
         }
 
         .name {
@@ -97,6 +103,13 @@
             color: #00d2ff;
             margin: 12px 0 4px 0;
             text-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
+            transition: 0.3s ease;
+        }
+
+        .name-link:hover .name {
+            color: #ffffff;
+            text-shadow: 0 0 18px rgba(0, 210, 255, 1);
+            transform: scale(1.05);
         }
 
         .location {
@@ -135,7 +148,7 @@
         .online-dot {
             width: 13px;
             height: 13px;
-            background: #747f8d; /* Mặc định xám */
+            background: #747f8d;
             border-radius: 50%;
             position: absolute;
             bottom: 0;
@@ -218,13 +231,17 @@
     </button>
 
     <div class="card">
-        <!-- Khung chứa Avatar & Khung trang trí tự động đồng bộ từ Discord -->
+        <!-- Khung chứa Avatar & Frame Discord -->
         <div class="avatar-container">
             <img class="avatar-img" id="userAvatar" src="./images.ico" alt="Avatar">
             <img class="avatar-frame" id="userFrame" src="" alt="Discord Decoration">
         </div>
 
-        <h2 class="name">Khánh Đăng</h2>
+        <!-- Tên được chuyển thành Link mở thẳng Hồ Sơ Discord -->
+        <a href="https://discord.com/users/1514256094090760322" target="_blank" class="name-link" title="Xem hồ sơ Discord">
+            <h2 class="name" id="displayName">khanhdang.</h2>
+        </a>
+
         <p class="location"><i class="fa-solid fa-location-dot"></i> Đồng Nai, Việt Nam</p>
 
         <div class="status-box">
@@ -253,7 +270,7 @@
 
     <!-- Script kết nối API Discord (Lanyard) -->
     <script>
-        const DISCORD_ID = "1514256094090760322"; // ID Discord của bạn
+        const DISCORD_ID = "1514256094090760322";
 
         async function fetchDiscordData() {
             try {
@@ -264,14 +281,22 @@
                     const data = res.data;
                     const user = data.discord_user;
 
-                    // 1. Cập nhật Avatar thật từ Discord
+                    // 1. Đồng bộ Tên hiển thị Discord
+                    const nameElem = document.getElementById('displayName');
+                    if (user.global_name) {
+                        nameElem.innerText = user.global_name;
+                    } else if (user.username) {
+                        nameElem.innerText = user.username;
+                    }
+
+                    // 2. Đồng bộ Avatar
                     if (user.avatar) {
                         const avatarUrl = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256`;
                         document.getElementById('userAvatar').src = avatarUrl;
                         document.getElementById('smallAvatar').src = avatarUrl;
                     }
 
-                    // 2. Cập nhật KHUNG TRANG TRÍ (Avatar Decoration) động thật từ Discord
+                    // 3. Đồng bộ Khung trang trí (Avatar Decoration)
                     if (user.avatar_decoration_data) {
                         const frameAsset = user.avatar_decoration_data.asset;
                         const frameUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${frameAsset}.png`;
@@ -280,7 +305,7 @@
                         frameElem.style.display = 'block';
                     }
 
-                    // 3. Cập nhật Trạng thái Online/Offline
+                    // 4. Trạng thái Online/Offline
                     const dot = document.getElementById('statusDot');
                     const statusColors = {
                         online: '#23a55a',
@@ -290,7 +315,7 @@
                     };
                     dot.style.background = statusColors[data.discord_status] || '#747f8d';
 
-                    // 4. Cập nhật Hoạt động / Custom Status
+                    // 5. Hoạt động Discord
                     const activityElem = document.getElementById('discordActivity');
                     if (data.activities && data.activities.length > 0) {
                         const customStatus = data.activities.find(a => a.type === 4);
@@ -306,7 +331,6 @@
             }
         }
 
-        // Tải dữ liệu ngay khi vào trang và tự động làm mới mỗi 10 giây
         fetchDiscordData();
         setInterval(fetchDiscordData, 10000);
     </script>
