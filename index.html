@@ -22,14 +22,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Hình nền GIF động nghệ thuật */
             background: #0f172a url('https://i.pinimg.com/originals/f9/57/6f/f9576fca9fc8ef79976a1d6327bbe9ae.gif') no-repeat center center/cover;
             color: #fff;
             overflow: hidden;
             cursor: pointer;
         }
 
-        /* Nút bật/tắt nhạc góc trái */
+        /* Nút loa góc trái */
         .audio-btn {
             position: absolute;
             top: 20px;
@@ -63,17 +62,35 @@
             position: relative;
         }
 
-        /* Avatar Mèo Nakroth */
-        .avatar-container img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #ffffff;
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
+        /* KHUNG CHỨA AVATAR VÀ DECORATION */
+        .avatar-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Tên chính */
+        .avatar-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Khung trang trí Discord tự động lấy từ API */
+        .avatar-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 130px;
+            height: 130px;
+            pointer-events: none;
+            display: none; /* Hiện khi có khung */
+        }
+
         .name {
             font-family: 'Cinzel', serif;
             font-size: 28px;
@@ -88,7 +105,6 @@
             margin-bottom: 20px;
         }
 
-        /* Khung status Discord */
         .status-box {
             background: rgba(0, 0, 0, 0.35);
             border-radius: 16px;
@@ -119,7 +135,7 @@
         .online-dot {
             width: 13px;
             height: 13px;
-            background: #23a55a;
+            background: #747f8d; /* Mặc định xám */
             border-radius: 50%;
             position: absolute;
             bottom: 0;
@@ -144,7 +160,6 @@
             margin-top: 2px;
         }
 
-        /* Icon Mạng Xã Hội */
         .social-icons {
             display: flex;
             justify-content: center;
@@ -174,7 +189,6 @@
             box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
         }
 
-        /* Lượt xem */
         .views {
             position: absolute;
             bottom: 12px;
@@ -186,49 +200,45 @@
             gap: 5px;
         }
 
-        /* Ẩn hoàn toàn khung YouTube */
-        #yt-player {
+        #youtube-player {
             position: absolute;
             width: 1px;
             height: 1px;
-            opacity: 0;
+            opacity: 0.01;
             pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Trình phát YouTube ẩn chuẩn API -->
-    <div id="yt-player"></div>
+    <div id="youtube-player"></div>
 
-    <!-- Nút loa bật/tắt nhạc -->
     <button class="audio-btn" id="audioBtn">
         <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
     </button>
 
-    <!-- Khung giao diện chính -->
     <div class="card">
+        <!-- Khung chứa Avatar & Khung trang trí tự động đồng bộ từ Discord -->
         <div class="avatar-container">
-            <img src="./images.ico" alt="Mèo Nakroth">
+            <img class="avatar-img" id="userAvatar" src="./images.ico" alt="Avatar">
+            <img class="avatar-frame" id="userFrame" src="" alt="Discord Decoration">
         </div>
 
         <h2 class="name">Khánh Đăng</h2>
         <p class="location"><i class="fa-solid fa-location-dot"></i> Đồng Nai, Việt Nam</p>
 
-        <!-- Trạng thái Discord -->
         <div class="status-box">
             <div class="status-avatar">
-                <img src="./images.ico" alt="Mèo Nakroth Status">
-                <div class="online-dot"></div>
+                <img id="smallAvatar" src="./images.ico" alt="Status Avatar">
+                <div class="online-dot" id="statusDot"></div>
             </div>
             <div class="status-info">
                 <h4>khanhdang. <span style="font-size: 10px; background: rgba(88, 101, 242, 0.4); padding: 2px 6px; border-radius: 4px; color: #5865F2;">DISCORD</span></h4>
-                <p>currently doing nothing</p>
+                <p id="discordActivity">currently doing nothing</p>
                 <div class="status-id"><i class="fa-solid fa-id-card"></i> ID: 1514256094090760322</div>
             </div>
         </div>
 
-        <!-- Mạng xã hội -->
         <div class="social-icons">
             <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
             <a href="https://discord.gg/tg7BTRZht" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
@@ -236,15 +246,72 @@
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
         </div>
 
-        <!-- Lượt xem -->
         <div class="views">
             <i class="fa-regular fa-eye"></i> <span>1</span>
         </div>
     </div>
 
-    <!-- Load YouTube Iframe API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Script kết nối API Discord (Lanyard) -->
+    <script>
+        const DISCORD_ID = "1514256094090760322"; // ID Discord của bạn
 
+        async function fetchDiscordData() {
+            try {
+                const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+                const res = await response.json();
+
+                if (res.success && res.data) {
+                    const data = res.data;
+                    const user = data.discord_user;
+
+                    // 1. Cập nhật Avatar thật từ Discord
+                    if (user.avatar) {
+                        const avatarUrl = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256`;
+                        document.getElementById('userAvatar').src = avatarUrl;
+                        document.getElementById('smallAvatar').src = avatarUrl;
+                    }
+
+                    // 2. Cập nhật KHUNG TRANG TRÍ (Avatar Decoration) động thật từ Discord
+                    if (user.avatar_decoration_data) {
+                        const frameAsset = user.avatar_decoration_data.asset;
+                        const frameUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${frameAsset}.png`;
+                        const frameElem = document.getElementById('userFrame');
+                        frameElem.src = frameUrl;
+                        frameElem.style.display = 'block';
+                    }
+
+                    // 3. Cập nhật Trạng thái Online/Offline
+                    const dot = document.getElementById('statusDot');
+                    const statusColors = {
+                        online: '#23a55a',
+                        idle: '#f0b232',
+                        dnd: '#f23f43',
+                        offline: '#747f8d'
+                    };
+                    dot.style.background = statusColors[data.discord_status] || '#747f8d';
+
+                    // 4. Cập nhật Hoạt động / Custom Status
+                    const activityElem = document.getElementById('discordActivity');
+                    if (data.activities && data.activities.length > 0) {
+                        const customStatus = data.activities.find(a => a.type === 4);
+                        if (customStatus && customStatus.state) {
+                            activityElem.innerText = customStatus.state;
+                        } else if (data.activities[0].name) {
+                            activityElem.innerText = `Playing ${data.activities[0].name}`;
+                        }
+                    }
+                }
+            } catch (err) {
+                console.log("Lỗi tải dữ liệu Discord:", err);
+            }
+        }
+
+        // Tải dữ liệu ngay khi vào trang và tự động làm mới mỗi 10 giây
+        fetchDiscordData();
+        setInterval(fetchDiscordData, 10000);
+    </script>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let player;
         let isPlaying = false;
@@ -252,14 +319,14 @@
         const audioIcon = document.getElementById("audioIcon");
 
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                videoId: 'bRjbXX7azr8', // ID video "Yêu Ai Để Không Phải Khóc"
+            player = new YT.Player('youtube-player', {
+                videoId: 'WZ5AbWd6gC4',
                 playerVars: {
                     'autoplay': 0,
                     'controls': 0,
                     'loop': 1,
-                    'playlist': 'bRjbXX7azr8',
-                    'rel': 0
+                    'playlist': 'WZ5AbWd6gC4',
+                    'start': 5
                 },
                 events: {
                     'onStateChange': onPlayerStateChange
@@ -271,30 +338,30 @@
             if (event.data === YT.PlayerState.PLAYING) {
                 isPlaying = true;
                 audioIcon.className = "fa-solid fa-volume-high";
-            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+            } else {
                 isPlaying = false;
                 audioIcon.className = "fa-solid fa-volume-xmark";
             }
         }
 
-        function togglePlay() {
+        function toggleAudio() {
             if (!player || typeof player.playVideo !== 'function') return;
             if (isPlaying) {
                 player.pauseVideo();
             } else {
+                if (player.getCurrentTime() < 5) player.seekTo(5, true);
                 player.playVideo();
             }
         }
 
-        // Bấm nút loa để bật/tắt
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
-            togglePlay();
+            toggleAudio();
         });
 
-        // Tự động bật ngay khi click bất cứ đâu trên web
         document.body.addEventListener("click", function() {
             if (!isPlaying && player && typeof player.playVideo === 'function') {
+                if (player.getCurrentTime() < 5) player.seekTo(5, true);
                 player.playVideo();
             }
         });
