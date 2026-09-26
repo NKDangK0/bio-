@@ -18,260 +18,272 @@
         }
 
         body {
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #0f172a url('https://i.pinimg.com/originals/f9/57/6f/f9576fca9fc8ef79976a1d6327bbe9ae.gif') no-repeat center center/cover;
             color: #fff;
-            padding: 20px;
-        }
-
-        /* KHUNG CHÍNH (CARD) */
-        .card {
-            width: 100%;
-            max-width: 440px;
-            background: rgba(15, 20, 35, 0.75);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 28px;
-            padding: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            position: relative;
-        }
-
-        /* BANNER ANIME PHÍA TRÊN */
-        .banner-box {
-            position: relative;
-            width: 100%;
-            height: 180px;
-            border-radius: 20px;
             overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
         }
 
-        .banner-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .banner-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 15px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+        /* NÚT LOA CÔ LẬP NẰM TRÊN CÙNG */
+        .audio-btn {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
             display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .banner-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .banner-sub {
-            font-size: 12px;
-            color: #cbd5e1;
-        }
-
-        /* PROFILE HEADER */
-        .profile-header {
-            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 16px;
+            cursor: pointer;
+            color: #00d2ff;
+            font-size: 22px;
+            transition: all 0.3s ease;
+            z-index: 999999;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
+        .audio-btn:hover { 
+            background: rgba(0, 210, 255, 0.3);
+            border-color: #00d2ff;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.8);
+        }
+
+        /* Khung kính mờ Glassmorphism */
+        .card {
+            width: 90%;
+            max-width: 420px;
+            background: rgba(20, 25, 40, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 30px 25px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* KHUNG CHỨA AVATAR VÀ DECORATION */
         .avatar-container {
             position: relative;
-            width: 80px;
-            height: 80px;
-            flex-shrink: 0;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .avatar-img {
-            width: 62px;
-            height: 62px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             object-fit: cover;
         }
 
+        /* Khung trang trí Discord tự động lấy từ API */
         .avatar-frame {
             position: absolute;
             top: 0;
             left: 0;
-            width: 80px;
-            height: 80px;
+            width: 130px;
+            height: 130px;
             pointer-events: none;
             display: none;
         }
 
-        .user-info {
-            text-align: left;
-        }
-
+        /* LINK MỞ HỒ SƠ DISCORD */
         .name-link {
             text-decoration: none;
+            display: inline-block;
         }
 
         .name {
             font-family: 'Cinzel', serif;
-            font-size: 22px;
+            font-size: 28px;
             color: #00d2ff;
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
-            transition: 0.3s;
+            margin: 12px 0 4px 0;
+            text-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
+            transition: 0.3s ease;
         }
 
         .name-link:hover .name {
-            color: #fff;
-            text-shadow: 0 0 15px rgba(0, 210, 255, 1);
+            color: #ffffff;
+            text-shadow: 0 0 18px rgba(0, 210, 255, 1);
+            transform: scale(1.05);
         }
 
         .location {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 2px;
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 20px;
         }
 
-        /* TRẠNG THÁI DISCORD */
         .status-box {
             background: rgba(0, 0, 0, 0.35);
-            border-radius: 14px;
-            padding: 10px 14px;
+            border-radius: 16px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            gap: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .status-avatar {
+            position: relative;
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+        }
+
+        .status-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffffff;
         }
 
         .online-dot {
-            width: 10px;
-            height: 10px;
+            width: 13px;
+            height: 13px;
             background: #747f8d;
             border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border: 2px solid #1e1e1e;
         }
 
-        .status-text {
-            font-size: 12px;
-            color: #cbd5e1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .status-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
         }
 
-        /* SOCIAL ICONS */
+        .status-info p {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .status-id {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
         .social-icons {
             display: flex;
             justify-content: center;
-            gap: 14px;
+            gap: 18px;
             margin-bottom: 20px;
         }
 
         .social-icons a {
             color: #fff;
-            font-size: 18px;
-            width: 38px;
-            height: 38px;
-            background: rgba(255, 255, 255, 0.08);
+            font-size: 22px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: 0.3s;
             text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .social-icons a:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px);
             background: #5865F2;
-            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
         }
 
-        /* NÚT LOA BẬT/TẮT NHẠC NỀN */
-        .audio-btn {
+        .views {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
+            bottom: 12px;
+            left: 20px;
+            font-size: 12px;
+            color: #94a3b8;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: 0.3s;
+            gap: 5px;
         }
 
-        .audio-btn:hover {
-            background: rgba(0, 210, 255, 0.8);
-            transform: scale(1.1);
+        /* KHUNG CHỨA YOUTUBE PLAYER ẨN NỀN */
+        #yt-player-container {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            left: -9999px;
         }
     </style>
 </head>
 <body>
 
-    <!-- FILE AUDIO NHẠC NỀN LOFI -->
-    <audio id="bgAudio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" preload="auto"></audio>
+    <!-- Khung phát YouTube ẩn -->
+    <div id="yt-player-container">
+        <div id="player"></div>
+    </div>
+
+    <!-- Nút Loa Bật/Tắt Nhạc -->
+    <div class="audio-btn" id="audioBtn">
+        <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
+    </div>
 
     <div class="card">
-        <!-- NÚT LOA BẬT/TẮT NHẠC NỀN -->
-        <button class="audio-btn" id="audioToggleBtn" title="Bật/Tắt Nhạc">
-            <i class="fa-solid fa-volume-xmark" id="audioIcon"></i>
-        </button>
-
-        <!-- BANNER ANIME ĐỘNG -->
-        <div class="banner-box">
-            <img class="banner-img" src="https://i.pinimg.com/originals/f9/57/6f/f9576fca9fc8ef79976a1d6327bbe9ae.gif" alt="Anime Banner">
-            <div class="banner-overlay">
-                <span class="banner-title">My Discord Server</span>
-                <span class="banner-sub">discord.gg/tg7BTRZht</span>
-            </div>
+        <!-- Khung chứa Avatar & Frame Discord -->
+        <div class="avatar-container">
+            <img class="avatar-img" id="userAvatar" src="./images.ico" alt="Avatar">
+            <img class="avatar-frame" id="userFrame" src="" alt="Discord Decoration">
         </div>
 
-        <!-- PROFILE HEADER -->
-        <div class="profile-header">
-            <div class="avatar-container">
-                <img class="avatar-img" id="userAvatar" src="./images.ico" alt="Avatar">
-                <img class="avatar-frame" id="userFrame" src="" alt="Decoration">
-            </div>
-            <div class="user-info">
-                <!-- Bấm trực tiếp vào tên để mở trang cá nhân Discord -->
-                <a href="https://discord.com/users/1514256094090760322" target="_blank" class="name-link">
-                    <h2 class="name" id="displayName">khanhdang.</h2>
-                </a>
-                <p class="location"><i class="fa-solid fa-location-dot"></i> Đồng Nai, Việt Nam</p>
-            </div>
-        </div>
+        <!-- Tên được chuyển thành Link mở thẳng Hồ Sơ Discord -->
+        <a href="https://discord.com/users/1514256094090760322" target="_blank" class="name-link" title="Xem hồ sơ Discord">
+            <h2 class="name" id="displayName">khanhdang.</h2>
+        </a>
 
-        <!-- STATUS BOX DISCORD -->
+        <p class="location"><i class="fa-solid fa-location-dot"></i> Đồng Nai, Việt Nam</p>
+
         <div class="status-box">
-            <div class="online-dot" id="statusDot"></div>
-            <span class="status-text" id="discordActivity">currently doing nothing</span>
+            <div class="status-avatar">
+                <img id="smallAvatar" src="./images.ico" alt="Status Avatar">
+                <div class="online-dot" id="statusDot"></div>
+            </div>
+            <div class="status-info">
+                <h4>khanhdang. <span style="font-size: 10px; background: rgba(88, 101, 242, 0.4); padding: 2px 6px; border-radius: 4px; color: #5865F2;">DISCORD</span></h4>
+                <p id="discordActivity">currently doing nothing</p>
+                <div class="status-id"><i class="fa-solid fa-id-card"></i> ID: 1514256094090760322</div>
+            </div>
         </div>
 
-        <!-- SOCIAL ICONS -->
         <div class="social-icons">
             <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
             <a href="https://discord.gg/tg7BTRZht" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
             <a href="https://www.tiktok.com/@_k...dang_" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
+        </div>
+
+        <div class="views">
+            <i class="fa-regular fa-eye"></i> <span>1</span>
         </div>
     </div>
 
@@ -288,6 +300,7 @@
                     const data = res.data;
                     const user = data.discord_user;
 
+                    // 1. Tên hiển thị Discord
                     const nameElem = document.getElementById('displayName');
                     if (user.global_name) {
                         nameElem.innerText = user.global_name;
@@ -295,11 +308,14 @@
                         nameElem.innerText = user.username;
                     }
 
+                    // 2. Avatar Discord
                     if (user.avatar) {
                         const avatarUrl = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256`;
                         document.getElementById('userAvatar').src = avatarUrl;
+                        document.getElementById('smallAvatar').src = avatarUrl;
                     }
 
+                    // 3. Khung trang trí (Avatar Decoration)
                     if (user.avatar_decoration_data) {
                         const frameAsset = user.avatar_decoration_data.asset;
                         const frameUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${frameAsset}.png`;
@@ -308,6 +324,7 @@
                         frameElem.style.display = 'block';
                     }
 
+                    // 4. Trạng thái Online/Offline
                     const dot = document.getElementById('statusDot');
                     const statusColors = {
                         online: '#23a55a',
@@ -317,6 +334,7 @@
                     };
                     dot.style.background = statusColors[data.discord_status] || '#747f8d';
 
+                    // 5. Hoạt động Discord
                     const activityElem = document.getElementById('discordActivity');
                     if (data.activities && data.activities.length > 0) {
                         const customStatus = data.activities.find(a => a.type === 4);
@@ -336,31 +354,52 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Script Điều Khiển Bật/Tắt Loa Phát Nhạc -->
+    <!-- Nạp Thư viện YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const audio = document.getElementById("bgAudio");
-        const audioBtn = document.getElementById("audioToggleBtn");
+        let ytPlayer;
+        let isMusicPlaying = false;
+        const audioBtn = document.getElementById("audioBtn");
         const audioIcon = document.getElementById("audioIcon");
 
-        audioBtn.addEventListener("click", function() {
-            if (audio.paused) {
-                audio.play();
+        // Khởi tạo player với Video ID của bạn
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('player', {
+                height: '0',
+                width: '0',
+                videoId: '9ft6swZMGzM', // ID video nhạc bạn vừa đưa
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': '9ft6swZMGzM'
+                },
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                isMusicPlaying = true;
                 audioIcon.className = "fa-solid fa-volume-high";
-            } else {
-                audio.pause();
+            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+                isMusicPlaying = false;
                 audioIcon.className = "fa-solid fa-volume-xmark";
             }
-        });
+        }
 
-        // Tự động phát khi người dùng nhấn bất kỳ đâu trên trang
-        document.body.addEventListener("click", function firstPlay() {
-            if (audio.paused) {
-                audio.play().then(() => {
-                    audioIcon.className = "fa-solid fa-volume-high";
-                }).catch(() => {});
+        audioBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
+
+            if (isMusicPlaying) {
+                ytPlayer.pauseVideo();
+            } else {
+                ytPlayer.playVideo();
             }
-            document.body.removeEventListener("click", firstPlay);
-        }, { once: true });
+        });
     </script>
 </body>
 </html>
