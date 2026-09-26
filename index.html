@@ -31,7 +31,7 @@
         .card {
             width: 100%;
             max-width: 460px;
-            background: rgba(15, 20, 35, 0.65);
+            background: rgba(15, 20, 35, 0.7);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -200,7 +200,7 @@
             box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
         }
 
-        /* MUSIC PLAYER MỚI */
+        /* TRÌNH PHÁT NHẠC (MUSIC PLAYER) */
         .music-player-box {
             background: rgba(0, 0, 0, 0.45);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -263,13 +263,13 @@
             width: 0%;
             background: #00d2ff;
             border-radius: 4px;
-            transition: width 0.3s linear;
+            transition: width 0.1s linear;
         }
 
         .music-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .control-btn {
@@ -286,45 +286,33 @@
         }
 
         .play-btn {
-            width: 36px;
-            height: 36px;
-            background: #ffffff;
+            width: 38px;
+            height: 38px;
+            background: #00d2ff;
             color: #0f172a;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
             transition: 0.3s;
             border: none;
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.5);
         }
 
         .play-btn:hover {
             transform: scale(1.1);
-            background: #00d2ff;
-            color: #fff;
-            box-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
-        }
-
-        /* YOUTUBE IFRAME DẠNG CỐ ĐỊNH */
-        #iframe-holder {
-            width: 1px;
-            height: 1px;
-            opacity: 0.01;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            pointer-events: none;
+            background: #ffffff;
+            color: #00d2ff;
+            box-shadow: 0 0 18px rgba(0, 210, 255, 0.8);
         }
     </style>
 </head>
 <body>
 
-    <!-- YOUTUBE PLAYER WRAPPER -->
-    <div id="iframe-holder">
-        <div id="player"></div>
-    </div>
+    <!-- PHÁT NHẠC MP3 TRỰC TIẾP KHÔNG BỊ BẢO MẬT CHẶN -->
+    <audio id="bgAudio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" preload="auto"></audio>
 
     <div class="card">
         <!-- 1. KHUNG BANNER ANIME ĐỘNG -->
@@ -364,7 +352,7 @@
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
         </div>
 
-        <!-- 2. TRÌNH PHÁT NHẠC (LOFI CHILL) -->
+        <!-- 2. TRÌNH PHÁT NHẠC CHUẨN MẸO MÈO NAKROTH -->
         <div class="music-player-box">
             <img class="music-cover" src="./images.ico" alt="Mèo Nakroth">
             
@@ -376,7 +364,7 @@
                     <div class="progress-bar" id="progressBar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
-                    <span class="time-text" id="durationTime">1:32:26</span>
+                    <span class="time-text" id="durationTime">2:28</span>
                 </div>
             </div>
 
@@ -451,83 +439,56 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Script YouTube API Mới - Sửa lỗi nút Play & Đổi bài hát -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Script Điều khiển Nhạc Bật/Tắt mượt 100% -->
     <script>
-        let ytPlayer;
-        let isPlaying = false;
-        let timerInterval;
-        let isReady = false;
-
+        const audio = document.getElementById("bgAudio");
         const playBtn = document.getElementById("playBtn");
         const playIcon = document.getElementById("playIcon");
         const currentTimeElem = document.getElementById("currentTime");
         const durationTimeElem = document.getElementById("durationTime");
         const progressFill = document.getElementById("progressFill");
-
-        // Bài hát mới: bGGZ6KUvulE (Chà Là Chill - Giải Cứu Thế Giới x Đi Khắp Thiên Hà x Không Buông)
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('player', {
-                height: '100',
-                width: '100',
-                videoId: 'bGGZ6KUvulE',
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'bGGZ6KUvulE',
-                    'enablejsapi': 1
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            isReady = true;
-        }
+        const progressBar = document.getElementById("progressBar");
 
         function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        function updateProgress() {
-            if (ytPlayer && typeof ytPlayer.getCurrentTime === 'function') {
-                const current = ytPlayer.getCurrentTime();
-                const total = ytPlayer.getDuration() || 5546;
-                
-                currentTimeElem.innerText = formatTime(current);
-                durationTimeElem.innerText = formatTime(total);
+        // Cập nhật tổng thời gian nhạc khi sẵn sàng
+        audio.addEventListener("loadedmetadata", function() {
+            durationTimeElem.innerText = formatTime(audio.duration);
+        });
 
-                const percent = (current / total) * 100;
+        // Cập nhật tiến trình chạy nhạc
+        audio.addEventListener("timeupdate", function() {
+            currentTimeElem.innerText = formatTime(audio.currentTime);
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
                 progressFill.style.width = `${percent}%`;
             }
-        }
+        });
 
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                isPlaying = true;
+        // Bấm Play / Pause
+        playBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            if (audio.paused) {
+                audio.play();
                 playIcon.className = "fa-solid fa-pause";
-                timerInterval = setInterval(updateProgress, 1000);
             } else {
-                isPlaying = false;
+                audio.pause();
                 playIcon.className = "fa-solid fa-play";
-                clearInterval(timerInterval);
             }
-        }
+        });
 
-        // Bấm nút tam giác để kích hoạt phát nhạc
-        playBtn.addEventListener("click", function() {
-            if (!isReady || !ytPlayer) return;
-
-            if (isPlaying) {
-                ytPlayer.pauseVideo();
-            } else {
-                ytPlayer.playVideo();
+        // Bấm vào thanh tiến trình để tua nhạc
+        progressBar.addEventListener("click", function(e) {
+            const rect = progressBar.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            if (audio.duration) {
+                audio.currentTime = (clickX / width) * audio.duration;
             }
         });
     </script>
