@@ -200,7 +200,7 @@
             box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
         }
 
-        /* TRÌNH PHÁT NHẠC (MUSIC PLAYER) */
+        /* TRÌNH PHÁT NHẠC CUSTOM */
         .music-player-box {
             background: rgba(0, 0, 0, 0.45);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -210,7 +210,6 @@
             align-items: center;
             gap: 14px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            margin-bottom: 12px;
         }
 
         .music-cover {
@@ -313,19 +312,14 @@
             box-shadow: 0 0 18px rgba(0, 210, 255, 0.8);
         }
 
-        /* KHUNG NHÚNG YOUTUBE CHUẨN ĐỂ KHÔNG BỊ CHẶN BỞI BẢO MẬT */
+        /* ẨN KHUNG YOUTUBE HOÀN TOÀN NHƯNG VẪN CHO PHÁT NHẠC */
         .yt-wrapper {
-            width: 100%;
-            height: 60px;
-            border-radius: 12px;
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            width: 1px;
+            height: 1px;
             overflow: hidden;
-            display: block;
-        }
-
-        .yt-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
         }
     </style>
 </head>
@@ -394,7 +388,7 @@
             </div>
         </div>
 
-        <!-- KHUNG PHÁT TRỰC TIẾP TỪ YOUTUBE ĐÚNG BÀI BẠN CHỌN -->
+        <!-- KHUNG YOUTUBE ẨN BÊN NGOÀI MÀN HÌNH -->
         <div class="yt-wrapper">
             <div id="player"></div>
         </div>
@@ -473,6 +467,7 @@
         const currentTimeElem = document.getElementById("currentTime");
         const durationTimeElem = document.getElementById("durationTime");
         const progressFill = document.getElementById("progressFill");
+        const progressBar = document.getElementById("progressBar");
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('player', {
@@ -482,7 +477,7 @@
                 playerVars: {
                     'start': 186,
                     'autoplay': 0,
-                    'controls': 1
+                    'controls': 0
                 },
                 events: {
                     'onStateChange': onPlayerStateChange
@@ -527,6 +522,16 @@
             } else {
                 ytPlayer.playVideo();
             }
+        });
+
+        progressBar.addEventListener("click", function(e) {
+            if (!ytPlayer || typeof ytPlayer.getDuration !== 'function') return;
+            const rect = progressBar.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            const total = ytPlayer.getDuration();
+            const seekTime = (clickX / width) * total;
+            ytPlayer.seekTo(seekTime, true);
         });
     </script>
 </body>
