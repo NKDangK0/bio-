@@ -41,7 +41,7 @@
             position: relative;
         }
 
-        /* 1. KHUNG BANNER VIDEO/GIF PHÍA TRÊN */
+        /* BANNER VIDEO/GIF PHÍA TRÊN */
         .banner-box {
             position: relative;
             width: 100%;
@@ -82,7 +82,7 @@
             color: #cbd5e1;
         }
 
-        /* THÔNG TIN PROFILE DISCORD */
+        /* PROFILE HEADER */
         .profile-header {
             display: flex;
             align-items: center;
@@ -144,7 +144,7 @@
             margin-top: 2px;
         }
 
-        /* TRẠNG THÁI HOẠT ĐỘNG DISCORD */
+        /* TRẠNG THÁI DISCORD */
         .status-box {
             background: rgba(0, 0, 0, 0.35);
             border-radius: 14px;
@@ -200,7 +200,7 @@
             box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
         }
 
-        /* 2. MUSIC PLAYER SANG TRỌNG PHÍA DƯỚI (DẠNG SPOTIFY) */
+        /* MUSIC PLAYER MỚI */
         .music-player-box {
             background: rgba(0, 0, 0, 0.45);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -307,26 +307,27 @@
             box-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
         }
 
-        /* YOUTUBE PLAYER ẨN */
-        #yt-player-container {
-            position: absolute;
+        /* YOUTUBE IFRAME DẠNG CỐ ĐỊNH */
+        #iframe-holder {
             width: 1px;
             height: 1px;
-            opacity: 0;
+            opacity: 0.01;
+            position: absolute;
+            bottom: 0;
+            left: 0;
             pointer-events: none;
-            left: -9999px;
         }
     </style>
 </head>
 <body>
 
-    <!-- YOUTUBE PLAYER ẨN -->
-    <div id="yt-player-container">
+    <!-- YOUTUBE PLAYER WRAPPER -->
+    <div id="iframe-holder">
         <div id="player"></div>
     </div>
 
     <div class="card">
-        <!-- 1. KHUNG BANNER ANIME ĐỘNG PHÍA TRÊN -->
+        <!-- 1. KHUNG BANNER ANIME ĐỘNG -->
         <div class="banner-box">
             <img class="banner-img" src="https://i.pinimg.com/originals/f9/57/6f/f9576fca9fc8ef79976a1d6327bbe9ae.gif" alt="Anime Banner">
             <div class="banner-overlay">
@@ -363,13 +364,11 @@
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
         </div>
 
-        <!-- 2. TRÌNH PHÁT NHẠC (MUSIC PLAYER) DẠNG MÈO NAKROTH & LOFI CHILL -->
+        <!-- 2. TRÌNH PHÁT NHẠC (LOFI CHILL) -->
         <div class="music-player-box">
-            <!-- Ảnh con mèo Nakroth của bạn -->
             <img class="music-cover" src="./images.ico" alt="Mèo Nakroth">
             
             <div class="music-details">
-                <!-- Tên bài hát lofi chill -->
                 <div class="music-title">lofi chill</div>
                 
                 <div class="progress-container">
@@ -377,11 +376,10 @@
                     <div class="progress-bar" id="progressBar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
-                    <span class="time-text" id="durationTime">24:44</span>
+                    <span class="time-text" id="durationTime">1:32:26</span>
                 </div>
             </div>
 
-            <!-- Nút điều khiển Play / Pause -->
             <div class="music-controls">
                 <button class="control-btn"><i class="fa-solid fa-backward-step"></i></button>
                 <button class="play-btn" id="playBtn">
@@ -405,7 +403,6 @@
                     const data = res.data;
                     const user = data.discord_user;
 
-                    // 1. Tên hiển thị
                     const nameElem = document.getElementById('displayName');
                     if (user.global_name) {
                         nameElem.innerText = user.global_name;
@@ -413,13 +410,11 @@
                         nameElem.innerText = user.username;
                     }
 
-                    // 2. Avatar
                     if (user.avatar) {
                         const avatarUrl = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256`;
                         document.getElementById('userAvatar').src = avatarUrl;
                     }
 
-                    // 3. Khung trang trí (Avatar Decoration)
                     if (user.avatar_decoration_data) {
                         const frameAsset = user.avatar_decoration_data.asset;
                         const frameUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${frameAsset}.png`;
@@ -428,7 +423,6 @@
                         frameElem.style.display = 'block';
                     }
 
-                    // 4. Trạng thái Online
                     const dot = document.getElementById('statusDot');
                     const statusColors = {
                         online: '#23a55a',
@@ -438,7 +432,6 @@
                     };
                     dot.style.background = statusColors[data.discord_status] || '#747f8d';
 
-                    // 5. Hoạt động
                     const activityElem = document.getElementById('discordActivity');
                     if (data.activities && data.activities.length > 0) {
                         const customStatus = data.activities.find(a => a.type === 4);
@@ -458,12 +451,13 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Script YouTube API & Đồng bộ thanh thời gian chạy nhạc -->
+    <!-- Script YouTube API Mới - Sửa lỗi nút Play & Đổi bài hát -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
         let isPlaying = false;
         let timerInterval;
+        let isReady = false;
 
         const playBtn = document.getElementById("playBtn");
         const playIcon = document.getElementById("playIcon");
@@ -471,21 +465,28 @@
         const durationTimeElem = document.getElementById("durationTime");
         const progressFill = document.getElementById("progressFill");
 
+        // Bài hát mới: bGGZ6KUvulE (Chà Là Chill - Giải Cứu Thế Giới x Đi Khắp Thiên Hà x Không Buông)
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('player', {
-                height: '0',
-                width: '0',
-                videoId: '9ft6swZMGzM',
+                height: '100',
+                width: '100',
+                videoId: 'bGGZ6KUvulE',
                 playerVars: {
                     'autoplay': 0,
                     'controls': 0,
                     'loop': 1,
-                    'playlist': '9ft6swZMGzM'
+                    'playlist': 'bGGZ6KUvulE',
+                    'enablejsapi': 1
                 },
                 events: {
+                    'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
                 }
             });
+        }
+
+        function onPlayerReady(event) {
+            isReady = true;
         }
 
         function formatTime(seconds) {
@@ -495,9 +496,9 @@
         }
 
         function updateProgress() {
-            if (ytPlayer && ytPlayer.getCurrentTime) {
+            if (ytPlayer && typeof ytPlayer.getCurrentTime === 'function') {
                 const current = ytPlayer.getCurrentTime();
-                const total = ytPlayer.getDuration() || 1484; // ~24:44
+                const total = ytPlayer.getDuration() || 5546;
                 
                 currentTimeElem.innerText = formatTime(current);
                 durationTimeElem.innerText = formatTime(total);
@@ -519,8 +520,9 @@
             }
         }
 
+        // Bấm nút tam giác để kích hoạt phát nhạc
         playBtn.addEventListener("click", function() {
-            if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
+            if (!isReady || !ytPlayer) return;
 
             if (isPlaying) {
                 ytPlayer.pauseVideo();
