@@ -200,7 +200,7 @@
             box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
         }
 
-        /* TRÌNH PHÁT NHẠC CHUẨN ĐẸP KHÔNG KHUNG DƯ THỪA */
+        /* TRÌNH PHÁT NHẠC CUSTOM ĐẸP MẮT */
         .music-player-box {
             background: rgba(0, 0, 0, 0.45);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -311,12 +311,20 @@
             color: #00d2ff;
             box-shadow: 0 0 18px rgba(0, 210, 255, 0.8);
         }
+
+        /* ẨN HOÀN TOÀN KHUNG YOUTUBE NHƯNG VẪN ĐẢM BẢO ÂM THANH CHẠY */
+        .yt-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            top: -9999px;
+            left: -9999px;
+            opacity: 0.01;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
-
-    <!-- FILE AUDIO PHÁT TRỰC TIẾP NHẠC LOFI THEO YÊU CẦU -->
-    <audio id="bgAudio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" preload="auto"></audio>
 
     <div class="card">
         <!-- BANNER ANIME ĐỘNG -->
@@ -356,15 +364,15 @@
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
         </div>
 
-        <!-- TRÌNH PHÁT NHẠC CỰC MƯỢT - NÚT PLAY ẤN LÀ CHẠY 100% -->
+        <!-- TRÌNH PHÁT NHẠC -->
         <div class="music-player-box">
             <img class="music-cover" src="./images.ico" alt="Mèo Nakroth">
             
             <div class="music-details">
-                <div class="music-title" title="Như Một Người Dưng Lofi, Yêu Bằng Mắt...">Như Một Người Dưng Lofi...</div>
+                <div class="music-title" title="Như Một Người Dưng Lofi">Như Một Người Dưng Lofi...</div>
                 
                 <div class="progress-container">
-                    <span class="time-text" id="currentTime">0:00</span>
+                    <span class="time-text" id="currentTime">51:56</span>
                     <div class="progress-bar" id="progressBar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
@@ -380,6 +388,11 @@
                 <button class="control-btn"><i class="fa-solid fa-forward-step"></i></button>
             </div>
         </div>
+    </div>
+
+    <!-- Khung YouTube Ẩn Nhẹ Nhàng -->
+    <div class="yt-hidden">
+        <div id="player"></div>
     </div>
 
     <!-- Script kết nối API Discord (Lanyard) -->
@@ -443,15 +456,41 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Script Điều khiển Phát nhạc trực tiếp -->
+    <!-- YouTube API Script Phát Nhạc Trực Tiếp Video bRjbXX7azr8 -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const audio = document.getElementById("bgAudio");
+        let ytPlayer;
+        let isPlaying = false;
+        let timerInterval;
+
         const playBtn = document.getElementById("playBtn");
         const playIcon = document.getElementById("playIcon");
         const currentTimeElem = document.getElementById("currentTime");
         const durationTimeElem = document.getElementById("durationTime");
         const progressFill = document.getElementById("progressFill");
         const progressBar = document.getElementById("progressBar");
+
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('player', {
+                height: '200',
+                width: '200',
+                videoId: 'bRjbXX7azr8',
+                playerVars: {
+                    'start': 3116,
+                    'autoplay': 0,
+                    'controls': 0
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            ytPlayer.unMute();
+            ytPlayer.setVolume(100);
+        }
 
         function formatTime(seconds) {
             if (isNaN(seconds)) return "0:00";
@@ -460,36 +499,47 @@
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        audio.addEventListener("loadedmetadata", function() {
-            durationTimeElem.innerText = formatTime(audio.duration);
-        });
+        function updateProgress() {
+            if (ytPlayer && typeof ytPlayer.getCurrentTime === 'function') {
+                const current = ytPlayer.getCurrentTime();
+                const total = ytPlayer.getDuration() || 3795;
+                currentTimeElem.innerText = formatTime(current);
+                durationTimeElem.innerText = formatTime(total);
 
-        audio.addEventListener("timeupdate", function() {
-            currentTimeElem.innerText = formatTime(audio.currentTime);
-            if (audio.duration) {
-                const percent = (audio.currentTime / audio.duration) * 100;
+                const percent = (current / total) * 100;
                 progressFill.style.width = `${percent}%`;
             }
-        });
+        }
 
-        playBtn.addEventListener("click", function(e) {
-            e.stopPropagation();
-            if (audio.paused) {
-                audio.play();
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                isPlaying = true;
                 playIcon.className = "fa-solid fa-pause";
+                timerInterval = setInterval(updateProgress, 1000);
             } else {
-                audio.pause();
+                isPlaying = false;
                 playIcon.className = "fa-solid fa-play";
+                clearInterval(timerInterval);
+            }
+        }
+
+        playBtn.addEventListener("click", function() {
+            if (!ytPlayer) return;
+            if (isPlaying) {
+                ytPlayer.pauseVideo();
+            } else {
+                ytPlayer.playVideo();
             }
         });
 
         progressBar.addEventListener("click", function(e) {
+            if (!ytPlayer || typeof ytPlayer.getDuration !== 'function') return;
             const rect = progressBar.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const width = rect.width;
-            if (audio.duration) {
-                audio.currentTime = (clickX / width) * audio.duration;
-            }
+            const total = ytPlayer.getDuration();
+            const seekTime = (clickX / width) * total;
+            ytPlayer.seekTo(seekTime, true);
         });
     </script>
 </body>
