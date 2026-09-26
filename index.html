@@ -25,28 +25,37 @@
             background: #0f172a url('https://i.pinimg.com/originals/f9/57/6f/f9576fca9fc8ef79976a1d6327bbe9ae.gif') no-repeat center center/cover;
             color: #fff;
             overflow: hidden;
+            position: relative;
         }
 
-        /* Nút loa góc trái */
+        /* NÚT LOAƯU TIÊN CAO NHẤT ĐỂ BẤM DỄ DÀNG */
         .audio-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            padding: 12px 16px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            color: #fff;
-            font-size: 20px;
-            transition: 0.3s;
-            z-index: 999;
+            color: #00d2ff;
+            font-size: 22px;
+            transition: all 0.3s ease;
+            z-index: 10000; /* Nằm trên cùng mọi thành phần */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
+
         .audio-btn:hover { 
-            background: rgba(255, 255, 255, 0.4); 
-            transform: scale(1.05);
+            background: rgba(0, 210, 255, 0.2);
+            border-color: #00d2ff;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
         }
 
         /* Khung kính mờ Glassmorphism */
@@ -62,6 +71,7 @@
             text-align: center;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             position: relative;
+            z-index: 1;
         }
 
         /* KHUNG CHỨA AVATAR VÀ DECORATION */
@@ -218,12 +228,12 @@
 </head>
 <body>
 
-    <!-- Nút Loa Bật/Tắt Nhạc -->
-    <button class="audio-btn" id="audioBtn">
+    <!-- Nút Loa Bật/Tắt Nhạc (Vị trí chuẩn) -->
+    <div class="audio-btn" id="audioBtn">
         <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
-    </button>
+    </div>
 
-    <!-- Thẻ Audio HTML5 Phát Nhạc Trực Tiếp Mượt Mà -->
+    <!-- Nguồn nhạc Lofi Chill chuẩn -->
     <audio id="bgMusic" loop src="https://files.catbox.moe/k33r2m.mp3"></audio>
 
     <div class="card">
@@ -331,35 +341,21 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Script Xử Lý Phát Nhạc Nhẹ Nhàng & Không Bị Chặn -->
+    <!-- Script Nhạc Nhẹ Nhàng Bật/Tắt Trực Tiếp -->
     <script>
         const audio = document.getElementById("bgMusic");
         const audioBtn = document.getElementById("audioBtn");
         const audioIcon = document.getElementById("audioIcon");
 
-        function togglePlay() {
+        audioBtn.onclick = function() {
             if (audio.paused) {
-                audio.play().then(() => {
-                    audioIcon.className = "fa-solid fa-volume-high";
-                }).catch(err => console.log("Cần tương tác để phát nhạc:", err));
+                audio.play();
+                audioIcon.className = "fa-solid fa-volume-high";
             } else {
                 audio.pause();
                 audioIcon.className = "fa-solid fa-volume-xmark";
             }
-        }
-
-        audioBtn.addEventListener("click", function(e) {
-            e.stopPropagation();
-            togglePlay();
-        });
-
-        // Bấm bất kỳ đâu trên màn hình lần đầu tiên cũng sẽ tự bật nhạc
-        document.body.addEventListener("click", function startOnFirstClick() {
-            if (audio.paused) {
-                togglePlay();
-            }
-            document.body.removeEventListener("click", startOnFirstClick);
-        });
+        };
     </script>
 </body>
 </html>
