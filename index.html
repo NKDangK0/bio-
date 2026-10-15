@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Khánh Đăng</title>
+    <title>khanhdang.</title>
+    <!-- Favicon Icon trên Tab Trình duyệt -->
+    <link rel="icon" type="image/x-icon" href="./images.ico">
+    
     <!-- Thư viện FontAwesome Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -84,7 +87,7 @@
             box-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
         }
 
-        /* KHUNG KÍNH MỜ TRONG SUỐT ĐỂ HIỆN RÕ VIDEO PHÍA SAU */
+        /* KHUNG KÍNH MỜ TRONG SUỐT HOÀN HẢO */
         .card {
             width: 90%;
             max-width: 420px;
@@ -320,6 +323,34 @@
         </div>
     </div>
 
+    <!-- SCRIPT CHẠY HIỆU ỨNG TIÊU ĐỀ TAB GUNS.LOL (CHẠY TỪNG CHỮ) -->
+    <script>
+        const titleText = "khanhdang. | bio";
+        let index = 0;
+        let isDeleting = false;
+
+        function animateTitle() {
+            if (!isDeleting) {
+                document.title = titleText.substring(0, index + 1);
+                index++;
+                if (index === titleText.length) {
+                    isDeleting = true;
+                    setTimeout(animateTitle, 2000); // Dừng lại 2s khi gõ xong toàn bộ
+                    return;
+                }
+            } else {
+                document.title = titleText.substring(0, index - 1);
+                index--;
+                if (index === 0) {
+                    isDeleting = false;
+                }
+            }
+            setTimeout(animateTitle, isDeleting ? 120 : 220); // Tốc độ gõ và xóa chữ
+        }
+
+        animateTitle();
+    </script>
+
     <!-- Script kết nối API Discord (Lanyard) -->
     <script>
         const DISCORD_ID = "1514256094090760322";
@@ -387,7 +418,7 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Nạp Thư viện YouTube API với bài hát từ YouTube của bạn -->
+    <!-- Nạp Thư viện YouTube API -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
