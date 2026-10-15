@@ -22,25 +22,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0f172a;
+            /* ĐÃ CẬP NHẬT LẠI ẢNH ĐỘNG (GIF) NỀN Ở ĐÂY */
+            background: #0f172a url('https://i.pinimg.com/originals/f9/57/6f/f9576fca9fc8ef79976a1d6327bbe9ae.gif') no-repeat center center/cover;
             color: #fff;
             overflow: hidden;
             position: relative;
         }
 
-        /* KHUNG CHỨA VIDEO NỀN ĐỘNG */
-        .bg-video {
+        /* Lớp phủ tối nhẹ giúp nổi bật khung bio */
+        body::before {
+            content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            z-index: -1;
-            filter: brightness(0.8);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.35);
+            z-index: 0;
+            pointer-events: none;
         }
 
         /* NÚT LOA CÔ LẬP NẰM TRÊN CÙNG */
@@ -253,12 +252,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Video nền động -->
-    <video autoplay muted loop playsinline class="bg-video">
-        <source src="https://assets.mixkit.co/videos/preview/mixkit-anime-girl-in-a-room-with-neon-lights-41270-large.mp4" type="video/mp4">
-        Trình duyệt của bạn không hỗ trợ video nền.
-    </video>
 
     <!-- Khung phát YouTube ẩn -->
     <div id="yt-player-container">
