@@ -159,6 +159,7 @@
             margin-bottom: 20px;
         }
 
+        /* KHUNG STATUS DISCORD CHUẨN XỊN GIỐNG ẢNH MẪU */
         .status-box {
             background: rgba(0, 0, 0, 0.25);
             border-radius: 16px;
@@ -197,15 +198,43 @@
             border: 2px solid #1e1e1e;
         }
 
-        .status-info h4 {
+        .status-info {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-header h4 {
             font-size: 14px;
             font-weight: 600;
             color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .discord-badge {
+            font-size: 9px;
+            background: rgba(88, 101, 242, 0.5);
+            padding: 1px 5px;
+            border-radius: 4px;
+            color: #fff;
+            font-weight: 600;
+            flex-shrink: 0;
         }
 
         .status-info p {
             font-size: 11px;
             color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
         }
 
         .status-id {
@@ -298,14 +327,18 @@
 
         <p class="location"><i class="fa-solid fa-location-dot"></i> Đồng Nai, Việt Nam</p>
 
+        <!-- KHUNG STATUS DISCORD -->
         <div class="status-box">
             <div class="status-avatar">
                 <img id="smallAvatar" src="./images.ico" alt="Status Avatar">
                 <div class="online-dot" id="statusDot"></div>
             </div>
             <div class="status-info">
-                <h4>khanhdang. <span style="font-size: 10px; background: rgba(88, 101, 242, 0.4); padding: 2px 6px; border-radius: 4px; color: #5865F2;">DISCORD</span></h4>
-                <p id="discordActivity">currently doing nothing</p>
+                <div class="status-header">
+                    <h4 id="statusUsername">khanhdang.</h4>
+                    <span class="discord-badge">DISCORD</span>
+                </div>
+                <p id="discordActivity">Chan Bố M đi</p>
                 <div class="status-id"><i class="fa-solid fa-id-card"></i> ID: 1514256094090760322</div>
             </div>
         </div>
@@ -323,7 +356,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT CHẠY HIỆU ỨNG TIÊU ĐỀ TAB GUNS.LOL (CHẠY TỪNG CHỮ) -->
+    <!-- SCRIPT CHẠY HIỆU ỨNG TIÊU ĐỀ TAB -->
     <script>
         const titleText = "khanhdang. | bio";
         let index = 0;
@@ -335,7 +368,7 @@
                 index++;
                 if (index === titleText.length) {
                     isDeleting = true;
-                    setTimeout(animateTitle, 2000); // Dừng lại 2s khi gõ xong toàn bộ
+                    setTimeout(animateTitle, 2000);
                     return;
                 }
             } else {
@@ -345,13 +378,13 @@
                     isDeleting = false;
                 }
             }
-            setTimeout(animateTitle, isDeleting ? 120 : 220); // Tốc độ gõ và xóa chữ
+            setTimeout(animateTitle, isDeleting ? 120 : 220);
         }
 
         animateTitle();
     </script>
 
-    <!-- Script kết nối API Discord (Lanyard) -->
+    <!-- Script kết nối API Discord (Lanyard) tối ưu chuẩn mẫu -->
     <script>
         const DISCORD_ID = "1514256094090760322";
 
@@ -365,12 +398,9 @@
                     const user = data.discord_user;
 
                     // 1. Tên hiển thị Discord
-                    const nameElem = document.getElementById('displayName');
-                    if (user.global_name) {
-                        nameElem.innerText = user.global_name;
-                    } else if (user.username) {
-                        nameElem.innerText = user.username;
-                    }
+                    let displayName = user.global_name || user.username;
+                    document.getElementById('displayName').innerText = displayName;
+                    document.getElementById('statusUsername').innerText = displayName;
 
                     // 2. Avatar Discord
                     if (user.avatar) {
@@ -398,7 +428,7 @@
                     };
                     dot.style.background = statusColors[data.discord_status] || '#747f8d';
 
-                    // 5. Hoạt động Discord
+                    // 5. Hoạt động & Custom Status Discord
                     const activityElem = document.getElementById('discordActivity');
                     if (data.activities && data.activities.length > 0) {
                         const customStatus = data.activities.find(a => a.type === 4);
@@ -407,6 +437,8 @@
                         } else if (data.activities[0].name) {
                             activityElem.innerText = `Playing ${data.activities[0].name}`;
                         }
+                    } else {
+                        activityElem.innerText = "Chan Bố M đi";
                     }
                 }
             } catch (err) {
