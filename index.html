@@ -41,7 +41,7 @@
             pointer-events: none;
         }
 
-        /* Lớp phủ tối mờ nhẹ giúp khung bio nổi bật */
+        /* Lớp phủ tối mờ nhẹ nền video */
         body::before {
             content: '';
             position: fixed;
@@ -49,7 +49,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(15, 23, 42, 0.35);
+            background: rgba(15, 23, 42, 0.2);
             z-index: -998;
             pointer-events: none;
         }
@@ -59,7 +59,7 @@
             position: fixed;
             top: 25px;
             left: 25px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 105, 180, 0.4);
@@ -84,18 +84,18 @@
             box-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
         }
 
-        /* Khung kính mờ Glassmorphism */
+        /* KHUNG KÍNH MỜ ĐÃ ĐƯỢC CHỈNH TRONG SUỐT ĐỂ HIỆN NỀN PHÍA SAU */
         .card {
             width: 90%;
             max-width: 420px;
-            background: rgba(20, 25, 40, 0.65);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(15, 23, 42, 0.35);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 24px;
             padding: 30px 25px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             position: relative;
             z-index: 1;
         }
@@ -157,7 +157,7 @@
         }
 
         .status-box {
-            background: rgba(0, 0, 0, 0.35);
+            background: rgba(0, 0, 0, 0.25);
             border-radius: 16px;
             padding: 12px 16px;
             display: flex;
