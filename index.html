@@ -57,7 +57,7 @@
             pointer-events: none;
         }
 
-        /* NÚT LOA CHUYỂN SANG TÔNG TRẮNG - XÁM BẠC CỰC HỢP TÔNG SAMURAI */
+        /* NÚT LOA TÔNG TRẮNG - XÁM BẠC */
         .audio-btn {
             position: fixed;
             top: 25px;
@@ -138,7 +138,7 @@
             display: inline-block;
         }
 
-        /* TÊN CHUYỂN SANG TRẮNG - PHÁT SÁNG BẠC NEON */
+        /* TÊN CHẠY CHỮ VỚI THỦ THUẬT HIỆU ỨNG TYPEWRITER */
         .name {
             font-family: 'Cinzel', serif;
             font-size: 28px;
@@ -146,6 +146,10 @@
             margin: 12px 0 4px 0;
             text-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
             transition: 0.3s ease;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .name-link:hover .name {
@@ -154,13 +158,25 @@
             transform: scale(1.05);
         }
 
+        /* Dấu nháy gõ chữ */
+        .cursor {
+            display: inline-block;
+            margin-left: 2px;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
         .location {
             font-size: 13px;
             color: #cbd5e1;
             margin-bottom: 20px;
         }
 
-        /* KHUNG STATUS DISCORD CHUẨN XỊN */
+        /* KHUNG STATUS DISCORD */
         .status-box {
             background: rgba(0, 0, 0, 0.25);
             border-radius: 16px;
@@ -321,9 +337,9 @@
             <img class="avatar-frame" id="userFrame" src="" alt="Discord Decoration">
         </div>
 
-        <!-- Tên hiển thị tông Trắng Bạc Neon -->
+        <!-- Tên hiển thị chạy từng chữ -->
         <a href="https://discord.com/users/1514256094090760322" target="_blank" class="name-link" title="Xem hồ sơ Discord">
-            <h2 class="name" id="displayName">khanhdang.</h2>
+            <h2 class="name"><span id="displayName"></span><span class="cursor">|</span></h2>
         </a>
 
         <p class="location"><i class="fa-solid fa-location-dot"></i> Đồng Nai, Việt Nam</p>
@@ -357,32 +373,63 @@
         </div>
     </div>
 
-    <!-- SCRIPT CHẠY HIỆU ỨNG TIÊU ĐỀ TAB -->
+    <!-- SCRIPT CHẠY HIỆU ỨNG TIÊU ĐỀ TAB PRO -->
     <script>
         const titleText = "khanhdang. | bio";
-        let index = 0;
-        let isDeleting = false;
+        let titleIdx = 0;
+        let isTitleDeleting = false;
 
         function animateTitle() {
-            if (!isDeleting) {
-                document.title = titleText.substring(0, index + 1);
-                index++;
-                if (index === titleText.length) {
-                    isDeleting = true;
+            if (!isTitleDeleting) {
+                document.title = titleText.substring(0, titleIdx + 1);
+                titleIdx++;
+                if (titleIdx === titleText.length) {
+                    isTitleDeleting = true;
                     setTimeout(animateTitle, 2000);
                     return;
                 }
             } else {
-                document.title = titleText.substring(0, index - 1);
-                index--;
-                if (index === 0) {
-                    isDeleting = false;
+                document.title = titleText.substring(0, titleIdx - 1);
+                titleIdx--;
+                if (titleIdx === 0) {
+                    isTitleDeleting = false;
                 }
             }
-            setTimeout(animateTitle, isDeleting ? 120 : 220);
+            setTimeout(animateTitle, isTitleDeleting ? 120 : 220);
         }
 
         animateTitle();
+    </script>
+
+    <!-- SCRIPT CHẠY GÕ CHỮ CHO TÊN CHÍNH (DISPLAY NAME) -->
+    <script>
+        let rawName = "khanhdang.";
+        let nameIdx = 0;
+        let isNameDeleting = false;
+
+        function animateDisplayName() {
+            const nameElem = document.getElementById('displayName');
+            if (!nameElem) return;
+
+            if (!isNameDeleting) {
+                nameElem.innerText = rawName.substring(0, nameIdx + 1);
+                nameIdx++;
+                if (nameIdx === rawName.length) {
+                    isNameDeleting = true;
+                    setTimeout(animateDisplayName, 2500); // Tạm dừng 2.5s khi gõ xong
+                    return;
+                }
+            } else {
+                nameElem.innerText = rawName.substring(0, nameIdx - 1);
+                nameIdx--;
+                if (nameIdx === 0) {
+                    isNameDeleting = false;
+                }
+            }
+            setTimeout(animateDisplayName, isNameDeleting ? 100 : 180);
+        }
+
+        animateDisplayName();
     </script>
 
     <!-- Script kết nối API Discord (Lanyard) -->
@@ -398,10 +445,11 @@
                     const data = res.data;
                     const user = data.discord_user;
 
-                    // 1. Tên hiển thị Discord
-                    let displayName = user.global_name || user.username;
-                    document.getElementById('displayName').innerText = displayName;
-                    document.getElementById('statusUsername').innerText = displayName;
+                    // 1. Cập nhật chuỗi chữ để tên chính chạy gõ chữ
+                    if (user.global_name || user.username) {
+                        rawName = user.global_name || user.username;
+                    }
+                    document.getElementById('statusUsername').innerText = user.global_name || user.username;
 
                     // 2. Avatar Discord
                     if (user.avatar) {
@@ -451,7 +499,7 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Nạp Thư viện YouTube API -->
+    <!-- Nạp Thư viện YouTube API với tính năng Autoplay Tự Động Bật Nhạc -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
@@ -465,15 +513,33 @@
                 width: '0',
                 videoId: 'iFWLSdqeHDE',
                 playerVars: {
-                    'autoplay': 0,
+                    'autoplay': 1,
                     'controls': 0,
                     'loop': 1,
                     'playlist': 'iFWLSdqeHDE'
                 },
                 events: {
+                    'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
                 }
             });
+        }
+
+        function onPlayerReady(event) {
+            // Thử phát nhạc ngay lập tức khi sẵn sàng
+            event.target.playVideo();
+
+            // Tự động kích hoạt phát nhạc khi người dùng chạm/click vào bất kỳ đâu trên trang
+            const autoPlayHandler = () => {
+                if (ytPlayer && typeof ytPlayer.playVideo === 'function' && !isMusicPlaying) {
+                    ytPlayer.playVideo();
+                }
+                document.removeEventListener('click', autoPlayHandler);
+                document.removeEventListener('touchstart', autoPlayHandler);
+            };
+
+            document.addEventListener('click', autoPlayHandler);
+            document.addEventListener('touchstart', autoPlayHandler);
         }
 
         function onPlayerStateChange(event) {
@@ -486,6 +552,7 @@
             }
         }
 
+        // Nút loa đóng/mở nhạc vẫn hoạt động bình thường
         audioBtn.addEventListener("click", function(e) {
             e.stopPropagation();
             if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
