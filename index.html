@@ -386,7 +386,7 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Nạp Thư viện YouTube API -->
+    <!-- Nạp Thư viện YouTube API với bài hát Lưu Niên - Jack -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
@@ -394,20 +394,16 @@
         const audioBtn = document.getElementById("audioBtn");
         const audioIcon = document.getElementById("audioIcon");
 
-        // LƯU Ý: Do TikTok không cho nhúng trực tiếp file nhạc qua API web, 
-        // bạn có thể tải bản nhạc từ TikTok đó lên YouTube (dưới dạng video ẩn hoặc công khai) 
-        // rồi thay ID YouTube vào đây. Hiện tại mình đang để tạm khung chờ, 
-        // bạn chỉ cần thay đoạn mã video YouTube vào chỗ 'VIDEO_ID_MUA_NHAC_CUA_BAN' bên dưới là nhạc sẽ chạy nhé!
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('player', {
                 height: '0',
                 width: '0',
-                videoId: 'VIDEO_ID_MUA_NHAC_CUA_BAN', // <-- THAY ID YOUTUBE CỦA BẢN NHẠC VÀO ĐÂY
+                videoId: 'boKJ5XDs_mY',
                 playerVars: {
                     'autoplay': 0,
                     'controls': 0,
                     'loop': 1,
-                    'playlist': 'VIDEO_ID_MUA_NHAC_CUA_BAN'
+                    'playlist': 'boKJ5XDs_mY'
                 },
                 events: {
                     'onStateChange': onPlayerStateChange
