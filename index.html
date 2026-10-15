@@ -22,10 +22,25 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0f172a url('https://i.pinimg.com/originals/f9/57/6f/f9576fca9fc8ef79976a1d6327bbe9ae.gif') no-repeat center center/cover;
+            background: #0f172a;
             color: #fff;
             overflow: hidden;
             position: relative;
+        }
+
+        /* KHUNG CHỨA VIDEO NỀN ĐỘNG */
+        .bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(0.8);
         }
 
         /* NÚT LOA CÔ LẬP NẰM TRÊN CÙNG */
@@ -36,7 +51,7 @@
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 210, 255, 0.4);
+            border: 1px solid rgba(255, 105, 180, 0.4);
             border-radius: 50%;
             width: 52px;
             height: 52px;
@@ -44,7 +59,7 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            color: #00d2ff;
+            color: #ff69b4;
             font-size: 22px;
             transition: all 0.3s ease;
             z-index: 999999;
@@ -52,17 +67,17 @@
         }
 
         .audio-btn:hover { 
-            background: rgba(0, 210, 255, 0.3);
-            border-color: #00d2ff;
+            background: rgba(255, 105, 180, 0.3);
+            border-color: #ff69b4;
             transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.8);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
         }
 
         /* Khung kính mờ Glassmorphism */
         .card {
             width: 90%;
             max-width: 420px;
-            background: rgba(20, 25, 40, 0.55);
+            background: rgba(20, 25, 40, 0.65);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -112,15 +127,15 @@
         .name {
             font-family: 'Cinzel', serif;
             font-size: 28px;
-            color: #00d2ff;
+            color: #ff69b4;
             margin: 12px 0 4px 0;
-            text-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
+            text-shadow: 0 0 12px rgba(255, 105, 180, 0.6);
             transition: 0.3s ease;
         }
 
         .name-link:hover .name {
             color: #ffffff;
-            text-shadow: 0 0 18px rgba(0, 210, 255, 1);
+            text-shadow: 0 0 18px rgba(255, 105, 180, 1);
             transform: scale(1.05);
         }
 
@@ -238,6 +253,12 @@
     </style>
 </head>
 <body>
+
+    <!-- Video nền động -->
+    <video autoplay muted loop playsinline class="bg-video">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-anime-girl-in-a-room-with-neon-lights-41270-large.mp4" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video nền.
+    </video>
 
     <!-- Khung phát YouTube ẩn -->
     <div id="yt-player-container">
@@ -367,7 +388,7 @@
             ytPlayer = new YT.Player('player', {
                 height: '0',
                 width: '0',
-                videoId: '9ft6swZMGzM', // ID video nhạc bạn vừa đưa
+                videoId: '9ft6swZMGzM',
                 playerVars: {
                     'autoplay': 0,
                     'controls': 0,
