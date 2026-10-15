@@ -18,6 +18,7 @@
         }
 
         body {
+            width: 100vw;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -28,31 +29,28 @@
             position: relative;
         }
 
-        /* VIDEO NỀN ĐỘNG CHUẨN ANIME */
+        /* ÉP VIDEO NỀN ĐỘNG PHỦ TOÀN MÀN HÌNH */
         .bg-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             object-fit: cover;
-            z-index: -1;
-            filter: brightness(0.85);
+            z-index: -999;
+            pointer-events: none;
         }
 
         /* Lớp phủ tối nhẹ giúp nổi bật khung bio */
         body::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.25);
-            z-index: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.3);
+            z-index: -998;
             pointer-events: none;
         }
 
@@ -267,9 +265,9 @@
 </head>
 <body>
 
-    <!-- Video nền động chính xác theo yêu cầu -->
+    <!-- Video nền động trỏ trực tiếp đến file background.mp4 của bạn -->
     <video autoplay muted loop playsinline class="bg-video">
-        <source src="https://assets.mixkit.co/videos/preview/mixkit-anime-girl-in-a-room-with-neon-lights-41270-large.mp4" type="video/mp4">
+        <source src="./background.mp4" type="video/mp4">
         Trình duyệt của bạn không hỗ trợ video nền.
     </video>
 
