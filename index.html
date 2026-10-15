@@ -314,8 +314,9 @@
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
         </div>
 
+        <!-- BIỂU TƯỢNG CON MẮT KÈM BỘ ĐẾM VIEW TỰ ĐỘNG TĂNG -->
         <div class="views">
-            <i class="fa-regular fa-eye"></i> <span>1</span>
+            <i class="fa-regular fa-eye"></i> <span id="viewCount">1</span>
         </div>
     </div>
 
@@ -386,7 +387,25 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- Nạp Thư viện YouTube API với bài hát mới từ YouTube của bạn -->
+    <!-- SCRIPT TỰ ĐỘNG TĂNG LƯỢT XEM KHI CÓ NGƯỜI TRUY CẬP -->
+    <script>
+        async function updateViewCount() {
+            try {
+                const res = await fetch('https://api.countapi.xyz/hit/nkdangk0.github.io/bio-views');
+                const data = await res.json();
+                document.getElementById('viewCount').innerText = data.value;
+            } catch (err) {
+                // Fallback lưu cục bộ nếu API mạng chậm
+                let visits = localStorage.getItem('page_views') || 10;
+                visits = parseInt(visits) + 1;
+                localStorage.setItem('page_views', visits);
+                document.getElementById('viewCount').innerText = visits;
+            }
+        }
+        updateViewCount();
+    </script>
+
+    <!-- Nạp Thư viện YouTube API với bài hát từ YouTube của bạn -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
