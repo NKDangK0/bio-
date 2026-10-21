@@ -290,7 +290,7 @@
             color: #ffffff;
             line-height: 1.4;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
         }
 
         /* Ô Chữ Nhật Nhỏ - Player Control */
@@ -663,27 +663,28 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI NHẠC LƯU NIÊN KHÔNG LỆCH NHỊP -->
+    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI NHẠC BẢN GỐC JACK (ID: boKJ5XDs_mY) -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
         let isMusicPlaying = false;
         let timerInterval;
 
-        // MẢNG LỜI NHẠC CĂN CHỈNH CHI TIẾT THEO CHU KỲ PHÁT (DÙNG ĐÚNG LINK BÀI LƯU NIÊN DUZME REMIX)
+        // MẢNG LỜI NHẠC CHUẨN XÁC THEO VIDEO GỐC CỦA JACK
         const lyricsData = [
-            { time: 0.0, text: "Nếu có thể xin em đừng rời xa anh..." },
-            { time: 3.5, text: "Những ký ức năm nào chẳng lành" },
-            { time: 6.8, text: "Nhắm ánh mắt trôi theo cả trời trong xanh" },
-            { time: 10.2, text: "Biết kết thúc thôi lòng cũng đành" },
-            { time: 14.0, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
-            { time: 18.2, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
-            { time: 22.0, text: "Dù trời này có nắng hay mưa thì anh cũng đau rồi" },
-            { time: 26.5, text: "Dù lần này có vắng hay thua thì anh cũng đành thôi..." },
-            { time: 30.2, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
-            { time: 34.8, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
-            { time: 39.2, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
-            { time: 43.5, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà..." }
+            { time: 0, text: "🎶 Đang phát: Lưu Niên - Jack (J97)" },
+            { time: 24, text: "Nếu có thể xin em đừng rời xa anh..." },
+            { time: 29, text: "Những ký ức năm nào chẳng lành" },
+            { time: 34, text: "Nhắm ánh mắt trôi theo cả trời trong xanh" },
+            { time: 39, text: "Biết kết thúc thôi lòng cũng đành" },
+            { time: 43, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
+            { time: 48, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
+            { time: 54, text: "Dù bầu trời này có nắng hay mưa thì anh cũng đau rồi" },
+            { time: 101, text: "Dù lần này có thắng hay thua thì anh cũng đành thôi..." },
+            { time: 107, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
+            { time: 114, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
+            { time: 121, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
+            { time: 129, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà..." }
         ];
 
         const audioBtn = document.getElementById("audioBtn");
@@ -699,12 +700,12 @@
             ytPlayer = new YT.Player('player', {
                 height: '0',
                 width: '0',
-                videoId: 'iFWLSdqeHDE',
+                videoId: 'boKJ5XDs_mY', // Đã đổi sang ID video gốc của Jack
                 playerVars: {
                     'autoplay': 1,
                     'controls': 0,
                     'loop': 1,
-                    'playlist': 'iFWLSdqeHDE'
+                    'playlist': 'boKJ5XDs_mY'
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -744,7 +745,6 @@
 
         function startMusicTimer() {
             stopMusicTimer();
-            // Tần số quét 100ms (10 lần/giây) giúp đồng bộ mượt và chuẩn xác từng miligiây
             timerInterval = setInterval(() => {
                 if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
 
@@ -765,14 +765,10 @@
                 const percent = (currentTime / duration) * 100;
                 progressBar.style.width = percent + '%';
 
-                // Chu kỳ lặp lại của bài Remix 1 Hour này là 45.62 giây
-                const loopDuration = 45.62;
-                const currentLoopTime = currentTime % loopDuration;
-
-                // Tìm và gán câu hát tương ứng
+                // Khớp chính xác thời gian thực của bài hát gốc
                 let currentLine = lyricsData[0].text;
                 for (let i = 0; i < lyricsData.length; i++) {
-                    if (currentLoopTime >= lyricsData[i].time) {
+                    if (currentTime >= lyricsData[i].time) {
                         currentLine = lyricsData[i].text;
                     } else {
                         break;
