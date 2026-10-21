@@ -290,7 +290,7 @@
             color: #ffffff;
             line-height: 1.4;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-            transition: all 0.25s ease;
+            transition: opacity 0.2s ease;
         }
 
         /* Ô Chữ Nhật Nhỏ - Player Control */
@@ -348,12 +348,6 @@
             letter-spacing: 0.5px;
             min-width: 55px;
             text-align: left;
-        }
-
-        .control-btns {
-            display: flex;
-            align-items: center;
-            gap: 15px;
         }
 
         .btn-icon {
@@ -663,14 +657,14 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI NHẠC BẢN GỐC JACK (CHỈNH MỐC GIÂY CHUẨN MƯỢT) -->
+    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI NHẠC BẢN GỐC JACK (MỐC GIÂY CHUẨN XÁC 100%) -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
         let isMusicPlaying = false;
         let timerInterval;
 
-        // MẢNG LỜI NHẠC CĂN CHỈNH TỪNG GIÂY THEO ĐÚNG VIDEO GỐC CỦA JACK
+        // MẢNG LỜI NHẠC ĐƯỢC CĂN CHÍNH XÁC THEO TỪNG GIÂY BÀI GỐC CỦA JACK
         const lyricsData = [
             { time: 0, text: "🎶 Đang phát: LƯU NIÊN - JACK (J97)" },
             { time: 24, text: "Nếu có thể xin em đừng rời xa anh..." },
@@ -680,8 +674,8 @@
             { time: 43, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
             { time: 48, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
             { time: 54, text: "Dù bầu trời này có nắng hay mưa thì anh cũng đau rồi" },
-            { time: 59, text: "Dù lần này có thắng hay thua thì anh cũng đành thôi..." },
-            { time: 64, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
+            { time: 58, text: "Dù lần này có thắng hay thua thì anh cũng đành thôi..." },
+            { time: 63, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
             { time: 70, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
             { time: 76, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
             { time: 82, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà, baby..." },
@@ -696,8 +690,8 @@
             { time: 115, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
             { time: 120, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
             { time: 125, text: "Dù bầu trời này có nắng hay mưa thì anh cũng đau rồi" },
-            { time: 130, text: "Dù lần này có thắng hay thua thì anh cũng đành thôi..." },
-            { time: 135, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
+            { time: 129, text: "Dù lần này có thắng hay thua thì anh cũng đành thôi..." },
+            { time: 134, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
             { time: 141, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
             { time: 147, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
             { time: 153, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà, baby..." },
@@ -785,7 +779,7 @@
                 const percent = (currentTime / duration) * 100;
                 progressBar.style.width = percent + '%';
 
-                // Khớp chính xác lời nhạc theo mốc thời gian thực
+                // Lấy câu hát tương ứng
                 let currentLine = lyricsData[0].text;
                 for (let i = 0; i < lyricsData.length; i++) {
                     if (currentTime >= lyricsData[i].time) {
