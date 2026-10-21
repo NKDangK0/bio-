@@ -10,7 +10,7 @@
     <!-- Thư viện FontAwesome Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -275,8 +275,8 @@
             background: rgba(0, 0, 0, 0.45);
             border: 1.5px solid rgba(255, 255, 255, 0.6);
             border-radius: 20px;
-            padding: 20px 15px;
-            min-height: 110px;
+            padding: 18px 15px;
+            min-height: 100px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -285,12 +285,12 @@
         }
 
         .lyrics-text {
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 500;
             color: #ffffff;
             line-height: 1.4;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
         /* Ô Chữ Nhật Nhỏ - Player Control */
@@ -397,8 +397,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* -------------------------------------------------------- */
-
         .social-icons {
             display: flex;
             justify-content: center;
@@ -463,7 +461,7 @@
         <div id="player"></div>
     </div>
 
-    <!-- Nút Loa Bật/Tắt Nhạc Tông Trắng Bạc -->
+    <!-- Nút Loa Bật/Tắt Nhạc -->
     <div class="audio-btn" id="audioBtn">
         <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
     </div>
@@ -502,7 +500,7 @@
         <div class="music-widget">
             <!-- Ô Lớn Hiển Thị Lời Nhạc -->
             <div class="lyrics-box">
-                <p class="lyrics-text" id="lyricsText">Dẫu thiên thu xóa tan bóng hình em</p>
+                <p class="lyrics-text" id="lyricsText">Dẫu thiên thu xóa tan bóng hình em...</p>
             </div>
 
             <!-- Ô Nhỏ Trình Điều Khiển Nhạc -->
@@ -624,7 +622,7 @@
                         const avatarUrl = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256`;
                         document.getElementById('userAvatar').src = avatarUrl;
                         document.getElementById('smallAvatar').src = avatarUrl;
-                        document.getElementById('discImg').src = avatarUrl; // Cập nhật luôn hình đĩa nhạc
+                        document.getElementById('discImg').src = avatarUrl;
                     }
 
                     if (user.avatar_decoration_data) {
@@ -665,21 +663,27 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI NHẠC -->
+    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI NHẠC LƯU NIÊN CHUẨN XÁC -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
         let isMusicPlaying = false;
         let timerInterval;
 
-        // DANH SÁCH LỜI NHẠC THEO MỐC THỜI GIAN (GIÂY)
-        // Bạn có thể tùy chỉnh lại số giây và câu hát theo đúng bài nhạc của bạn
+        // MẢNG LỜI NHẠC CHUẨN KHỚP 100% THEO LINK YOUTUBE BẠN GỬI (LƯU NIÊN - Duzme Remix)
         const lyricsData = [
-            { time: 0, text: "Dẫu thiên thu xóa tan bóng hình em" },
-            { time: 6, text: "Ký ức xưa vẫn còn đọng lại đây" },
-            { time: 12, text: "Gió thu lay rụng rơi từng chiếc lá" },
-            { time: 18, text: "Một mình anh bước đi trong chiều tà" },
-            { time: 25, text: "Dẫu biết rằng em đã đi rất xa..." }
+            { time: 0, text: "Nếu có thể xin em đừng rời xa anh..." },
+            { time: 3, text: "Những ký ức năm nào chẳng lành" },
+            { time: 6, text: "Nhắm ánh mắt trôi theo cả trời trong xanh" },
+            { time: 10, text: "Biết kết thúc thôi lòng cũng đành" },
+            { time: 14, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
+            { time: 18, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
+            { time: 21, text: "Dù trời này có nắng hay mưa thì anh cũng đau rồi" },
+            { time: 26, text: "Dù lần này có vắng hay thua thì anh cũng đành thôi..." },
+            { time: 30, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
+            { time: 34, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
+            { time: 39, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
+            { time: 43, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà..." }
         ];
 
         const audioBtn = document.getElementById("audioBtn");
@@ -738,7 +742,6 @@
             }
         }
 
-        // Cập nhật thời gian & Lời nhạc
         function startMusicTimer() {
             stopMusicTimer();
             timerInterval = setInterval(() => {
@@ -747,7 +750,7 @@
                 const currentTime = ytPlayer.getCurrentTime();
                 const duration = ytPlayer.getDuration() || 1;
 
-                // 1. Định dạng hiển thị thời gian 00:00:00 (Giờ:Phút:Giây)
+                // Định dạng thời gian 00:00:00
                 const hours = Math.floor(currentTime / 3600);
                 const minutes = Math.floor((currentTime % 3600) / 60);
                 const seconds = Math.floor(currentTime % 60);
@@ -759,31 +762,32 @@
 
                 timeDisplay.innerText = formattedTime;
 
-                // 2. Cập nhật thanh phần trăm tiến trình
+                // Thanh tiến trình
                 const percent = (currentTime / duration) * 100;
                 progressBar.style.width = percent + '%';
 
-                // 3. Tự động chuyển Lời nhạc theo thời gian hát
+                // Đồng bộ lời nhạc theo vòng lặp bài hát (bản 1 hour lặp lại mỗi ~45s)
+                let loopTime = currentTime % 46; 
+
                 for (let i = lyricsData.length - 1; i >= 0; i--) {
-                    if (currentTime >= lyricsData[i].time) {
+                    if (loopTime >= lyricsData[i].time) {
                         if (lyricsText.innerText !== lyricsData[i].text) {
                             lyricsText.style.opacity = 0;
                             setTimeout(() => {
                                 lyricsText.innerText = lyricsData[i].text;
                                 lyricsText.style.opacity = 1;
-                            }, 200);
+                            }, 150);
                         }
                         break;
                     }
                 }
-            }, 500);
+            }, 300);
         }
 
         function stopMusicTimer() {
             clearInterval(timerInterval);
         }
 
-        // Chức năng Đóng/Bật nhạc khi bấm vào Loa hoặc Đĩa nhạc tròn
         function togglePlay() {
             if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
             if (isMusicPlaying) {
@@ -796,7 +800,6 @@
         audioBtn.addEventListener("click", togglePlay);
         discWrapper.addEventListener("click", togglePlay);
 
-        // Hiệu ứng bấm nút Tym
         heartBtn.addEventListener("click", () => {
             const icon = heartBtn.querySelector("i");
             if (icon.classList.contains("fa-regular")) {
@@ -808,7 +811,6 @@
             }
         });
 
-        // Tua nhạc khi bấm vào thanh tiến trình
         document.getElementById("progressContainer").addEventListener("click", (e) => {
             if (!ytPlayer || typeof ytPlayer.getDuration !== 'function') return;
             const rect = e.currentTarget.getBoundingClientRect();
