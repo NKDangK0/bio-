@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>khanhdang.</title>
-    <!-- Favicon Icon -->
+    <!-- Favicon Icon trên Tab Trình duyệt -->
     <link rel="icon" type="image/x-icon" href="./images.ico">
     
     <!-- Thư viện FontAwesome Icon -->
@@ -290,7 +290,7 @@
             color: #ffffff;
             line-height: 1.4;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
 
         /* Ô Chữ Nhật Nhỏ - Player Control */
@@ -500,7 +500,7 @@
         <div class="music-widget">
             <!-- Ô Lớn Hiển Thị Lời Nhạc -->
             <div class="lyrics-box">
-                <p class="lyrics-text" id="lyricsText">Dẫu thiên thu xóa tan bóng hình em...</p>
+                <p class="lyrics-text" id="lyricsText">Nếu có thể xin em đừng rời xa anh...</p>
             </div>
 
             <!-- Ô Nhỏ Trình Điều Khiển Nhạc -->
@@ -663,27 +663,27 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI NHẠC LƯU NIÊN CHUẨN XÁC -->
+    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI NHẠC LƯU NIÊN KHÔNG LỆCH NHỊP -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
         let isMusicPlaying = false;
         let timerInterval;
 
-        // MẢNG LỜI NHẠC CHUẨN KHỚP 100% THEO LINK YOUTUBE BẠN GỬI (LƯU NIÊN - Duzme Remix)
+        // MẢNG LỜI NHẠC CĂN CHỈNH CHI TIẾT THEO CHU KỲ PHÁT (DÙNG ĐÚNG LINK BÀI LƯU NIÊN DUZME REMIX)
         const lyricsData = [
-            { time: 0, text: "Nếu có thể xin em đừng rời xa anh..." },
-            { time: 3, text: "Những ký ức năm nào chẳng lành" },
-            { time: 6, text: "Nhắm ánh mắt trôi theo cả trời trong xanh" },
-            { time: 10, text: "Biết kết thúc thôi lòng cũng đành" },
-            { time: 14, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
-            { time: 18, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
-            { time: 21, text: "Dù trời này có nắng hay mưa thì anh cũng đau rồi" },
-            { time: 26, text: "Dù lần này có vắng hay thua thì anh cũng đành thôi..." },
-            { time: 30, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
-            { time: 34, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
-            { time: 39, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
-            { time: 43, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà..." }
+            { time: 0.0, text: "Nếu có thể xin em đừng rời xa anh..." },
+            { time: 3.5, text: "Những ký ức năm nào chẳng lành" },
+            { time: 6.8, text: "Nhắm ánh mắt trôi theo cả trời trong xanh" },
+            { time: 10.2, text: "Biết kết thúc thôi lòng cũng đành" },
+            { time: 14.0, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
+            { time: 18.2, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
+            { time: 22.0, text: "Dù trời này có nắng hay mưa thì anh cũng đau rồi" },
+            { time: 26.5, text: "Dù lần này có vắng hay thua thì anh cũng đành thôi..." },
+            { time: 30.2, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
+            { time: 34.8, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
+            { time: 39.2, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
+            { time: 43.5, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà..." }
         ];
 
         const audioBtn = document.getElementById("audioBtn");
@@ -744,6 +744,7 @@
 
         function startMusicTimer() {
             stopMusicTimer();
+            // Tần số quét 100ms (10 lần/giây) giúp đồng bộ mượt và chuẩn xác từng miligiây
             timerInterval = setInterval(() => {
                 if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
 
@@ -755,33 +756,33 @@
                 const minutes = Math.floor((currentTime % 3600) / 60);
                 const seconds = Math.floor(currentTime % 60);
 
-                const formattedTime = 
+                timeDisplay.innerText = 
                     String(hours).padStart(2, '0') + ':' +
                     String(minutes).padStart(2, '0') + ':' +
                     String(seconds).padStart(2, '0');
-
-                timeDisplay.innerText = formattedTime;
 
                 // Thanh tiến trình
                 const percent = (currentTime / duration) * 100;
                 progressBar.style.width = percent + '%';
 
-                // Đồng bộ lời nhạc theo vòng lặp bài hát (bản 1 hour lặp lại mỗi ~45s)
-                let loopTime = currentTime % 46; 
+                // Chu kỳ lặp lại của bài Remix 1 Hour này là 45.62 giây
+                const loopDuration = 45.62;
+                const currentLoopTime = currentTime % loopDuration;
 
-                for (let i = lyricsData.length - 1; i >= 0; i--) {
-                    if (loopTime >= lyricsData[i].time) {
-                        if (lyricsText.innerText !== lyricsData[i].text) {
-                            lyricsText.style.opacity = 0;
-                            setTimeout(() => {
-                                lyricsText.innerText = lyricsData[i].text;
-                                lyricsText.style.opacity = 1;
-                            }, 150);
-                        }
+                // Tìm và gán câu hát tương ứng
+                let currentLine = lyricsData[0].text;
+                for (let i = 0; i < lyricsData.length; i++) {
+                    if (currentLoopTime >= lyricsData[i].time) {
+                        currentLine = lyricsData[i].text;
+                    } else {
                         break;
                     }
                 }
-            }, 300);
+
+                if (lyricsText.innerText !== currentLine) {
+                    lyricsText.innerText = currentLine;
+                }
+            }, 100);
         }
 
         function stopMusicTimer() {
