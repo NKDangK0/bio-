@@ -350,12 +350,6 @@
             text-align: left;
         }
 
-        .control-btns {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
         .btn-icon {
             background: none;
             border: none;
@@ -663,14 +657,14 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI NHẠC BẢN GỐC JACK (FIX ĐOẠN SAU KHÔNG BỊ TRƯỚC LỜI) -->
+    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI NHẠC BẢN GỐC JACK (FIX ĐOẠN VERSE 2 KHÔNG BỊ TRỄ LỜI) -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
         let isMusicPlaying = false;
         let timerInterval;
 
-        // MẢNG LỜI NHẠC ĐÃ ĐƯỢC CHỈNH MỐC GIÂY CHUẨN XÁC THEO NHỊP HÁT CỦA JACK
+        // MẢNG LỜI NHẠC Đã BẮT CHUẨN TỪNG TẮC GIÂY VERSE 2 CỦA BÀI HÁT
         const lyricsData = [
             { time: 0, text: "🎶 Đang phát: LƯU NIÊN - JACK (J97)" },
             { time: 25, text: "Nếu có thể xin em đừng rời xa anh..." },
@@ -685,21 +679,22 @@
             { time: 69, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
             { time: 75, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
             { time: 81, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà, baby..." },
-            { time: 88, text: "Yêu nhau bao lâu hôm nay xa nhau còn tới mai..." },
-            { time: 92, text: "Không sao anh không đau khóe mi này lâu" },
-            { time: 95, text: "Bước đi thật mau trái ngang làm sao, nói ra làm sao, nhớ nhau thì sao?" },
-            { time: 100, text: "Nơi tâm tư anh có hình em rồi..." },
-            { time: 103, text: "Chờ mong đêm khuya thanh vắng cô đơn vắng trong tim anh..." },
-            { time: 108, text: "Giờ không sao em không nói ra bao lâu xa nhau chẳng chờ?" },
-            { time: 112, text: "Trong tình yêu trao em có chút vấn vương ban đầu..." },
-            { time: 116, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
-            { time: 121, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
-            { time: 127, text: "Dù bầu trời này có nắng hay mưa thì anh cũng đau rồi" },
-            { time: 132, text: "Dù lần này có thắng hay thua thì anh cũng đành thôi..." },
-            { time: 137, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
-            { time: 143, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
-            { time: 149, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
-            { time: 155, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà, baby..." },
+            { time: 87, text: "Yêu nhau bao lâu hôm nay xa nhau còn tới mai..." },
+            { time: 90, text: "Không sao anh không đau khóe mi này lâu" },
+            { time: 92, text: "Bước đi thật mau trái ngang làm sao..." },
+            { time: 94, text: "Nói ra làm sao, nhớ nhau thì sao?" },
+            { time: 96, text: "Nơi tâm tư anh có hình em rồi..." },
+            { time: 99, text: "Chờ mong đêm khuya thanh vắng cô đơn vắng trong tim anh..." },
+            { time: 103, text: "Giờ không sao em không nói ra bao lâu xa nhau chẳng chờ?" },
+            { time: 108, text: "Trong tình yêu trao em có chút vấn vương ban đầu..." },
+            { time: 112, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
+            { time: 116, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
+            { time: 121, text: "Dù bầu trời này có nắng hay mưa thì anh cũng đau rồi" },
+            { time: 127, text: "Dù lần này có thắng hay thua thì anh cũng đành thôi..." },
+            { time: 132, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
+            { time: 137, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
+            { time: 143, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
+            { time: 149, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà, baby..." },
             { time: 161, text: "Tôi nhất định đại cơ sương hạ thu đông..." },
             { time: 167, text: "Thả cô đừng quên tôi nha..." },
             { time: 172, text: "Đôi chân cuộc đời như lá, mai này nhìn em lộng lẫy áo thêu hoa..." },
