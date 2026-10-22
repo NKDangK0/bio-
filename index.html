@@ -270,13 +270,13 @@
             margin-bottom: 15px;
         }
 
-        /* Ô Chữ Nhật Lớn - Hiển Thị Tiêu Đề Bài Hát Cố Định 100% */
+        /* Ô Chữ Nhật Lớn - CỐ ĐỊNH DUY NHẤT 1 DÒNG DÙ NHẠC PHÁT TỚI ĐÂU */
         .lyrics-box {
             background: rgba(0, 0, 0, 0.45);
             border: 1.5px solid rgba(255, 255, 255, 0.6);
             border-radius: 20px;
             padding: 18px 15px;
-            min-height: 100px;
+            min-height: 80px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -285,7 +285,7 @@
         }
 
         .lyrics-text {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 500;
             color: #ffffff;
             line-height: 1.4;
@@ -347,12 +347,6 @@
             letter-spacing: 0.5px;
             min-width: 55px;
             text-align: left;
-        }
-
-        .control-btns {
-            display: flex;
-            align-items: center;
-            gap: 15px;
         }
 
         .btn-icon {
@@ -497,7 +491,7 @@
 
         <!-- MUSIC PLAYER WIDGET CHUẨN GIAO DIỆN -->
         <div class="music-widget">
-            <!-- Ô Lớn Hiển Thị Tiêu Đề Bài Hát Cố Định 100% (Không chạy lời nữa) -->
+            <!-- Ô CỐ ĐỊNH HOÀN TOÀN KHÔNG ĐỔI CHỮ -->
             <div class="lyrics-box">
                 <p class="lyrics-text">🎶 Đang phát: LƯU NIÊN (Duzme Remix)</p>
             </div>
@@ -742,7 +736,7 @@
                     String(minutes).padStart(2, '0') + ':' +
                     String(seconds).padStart(2, '0');
 
-                // Chỉ cập nhật thanh tiến trình chạy theo bài hát
+                // Chỉ cập nhật thanh tiến trình chạy mượt mà theo bài hát
                 const percent = (currentTime / duration) * 100;
                 progressBar.style.width = percent + '%';
             }, 100);
