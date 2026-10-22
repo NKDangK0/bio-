@@ -270,7 +270,7 @@
             margin-bottom: 15px;
         }
 
-        /* Ô Chữ Nhật Lớn - Lời Nhạc */
+        /* Ô Chữ Nhật Lớn - Hiển Thị Tiêu Đề Bài Hát Cố Định */
         .lyrics-box {
             background: rgba(0, 0, 0, 0.45);
             border: 1.5px solid rgba(255, 255, 255, 0.6);
@@ -290,7 +290,6 @@
             color: #ffffff;
             line-height: 1.4;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-            transition: opacity 0.2s ease;
         }
 
         /* Ô Chữ Nhật Nhỏ - Player Control */
@@ -498,9 +497,9 @@
 
         <!-- MUSIC PLAYER WIDGET CHUẨN GIAO DIỆN -->
         <div class="music-widget">
-            <!-- Ô Lớn Hiển Thị Lời Nhạc -->
+            <!-- Ô Lớn Hiển Thị Tiêu Đề Bài Hát Cố Định -->
             <div class="lyrics-box">
-                <p class="lyrics-text" id="lyricsText">🎶 Đang phát: LƯU NIÊN (Duzme Remix)</p>
+                <p class="lyrics-text">🎶 Đang phát: LƯU NIÊN (Duzme Remix)</p>
             </div>
 
             <!-- Ô Nhỏ Trình Điều Khiển Nhạc -->
@@ -663,50 +662,17 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ ĐỒNG BỘ LỜI REMIX DUZME (LINK YOUTUBE: iFWLSdqeHDE) -->
+    <!-- XỬ LÝ TRÌNH PHÁT NHẠC REMIX (LINK YOUTUBE: iFWLSdqeHDE) -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
         let isMusicPlaying = false;
         let timerInterval;
 
-        // MẢNG LỜI NHẠC KHỚP CHUẨN THEO BẢN REMIX
-        const lyricsData = [
-            { time: 0, text: "🎶 Đang phát: LƯU NIÊN (Duzme Remix)" },
-            { time: 2, text: "Nếu có thể xin em đừng rời xa anh..." },
-            { time: 6, text: "Những ký ức năm nào chẳng lành" },
-            { time: 10, text: "Nhắm ánh mắt trôi theo cả trời trong xanh" },
-            { time: 13, text: "Biết kết thúc thôi lòng cũng đành" },
-            { time: 15, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
-            { time: 19, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
-            { time: 22, text: "Dù bầu trời này có nắng hay mưa thì anh cũng đau rồi" },
-            { time: 26, text: "Dù lần này có thắng hay thua thì anh cũng đành thôi..." },
-            { time: 30, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
-            { time: 34, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
-            { time: 37, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
-            { time: 42, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà..." },
-            { time: 125, text: "Yêu nhau bao lâu hôm nay xa nhau còn tới mai..." },
-            { time: 128, text: "Không sao anh không đau khóe mi này lâu" },
-            { time: 130, text: "Bước đi thật mau trái ngang làm sao, nói ra làm sao, nhớ nhau thì sao?" },
-            { time: 135, text: "Nơi tâm tư anh có hình em rồi..." },
-            { time: 138, text: "Chờ mong đêm khuya thanh vắng cô đơn vắng trong tim anh..." },
-            { time: 142, text: "Giờ không sao em không nói ra bao lâu xa nhau chẳng chờ?" },
-            { time: 147, text: "Trong tình yêu trao em có chút vấn vương ban đầu..." },
-            { time: 150, text: "Đâu cần nói, đâu cần dối, đâu cần yêu trên khóe môi" },
-            { time: 154, text: "Em đi rồi thôi, anh lẻ loi, từ nay em mất tôi" },
-            { time: 158, text: "Dù bầu trời này có nắng hay mưa thì anh cũng đau rồi" },
-            { time: 162, text: "Dù lần này có thắng hay thua thì anh cũng đành thôi..." },
-            { time: 167, text: "Nên đôi ta phải xa nhau mãi, người về bên người ta và xây đắp tương lai" },
-            { time: 173, text: "Cả một đời chỉ biết yêu em nhưng giờ đây nhìn anh lắm bi hài" },
-            { time: 179, text: "Đôi chân anh rụng rơi như lá, mai này đây nhìn em lộng lẫy áo thêu hoa" },
-            { time: 185, text: "Một nụ cười cứ thế chia xa, xin đừng yêu, đừng thương xót anh mà, baby..." }
-        ];
-
         const audioBtn = document.getElementById("audioBtn");
         const audioIcon = document.getElementById("audioIcon");
         const discImg = document.getElementById("discImg");
         const discWrapper = document.getElementById("discWrapper");
-        const lyricsText = document.getElementById("lyricsText");
         const progressBar = document.getElementById("progressBar");
         const timeDisplay = document.getElementById("timeDisplay");
         const heartBtn = document.getElementById("heartBtn");
@@ -776,23 +742,9 @@
                     String(minutes).padStart(2, '0') + ':' +
                     String(seconds).padStart(2, '0');
 
-                // Thanh tiến trình
+                // Cập nhật thanh tiến trình chạy mượt mà theo bài hát
                 const percent = (currentTime / duration) * 100;
                 progressBar.style.width = percent + '%';
-
-                // Lấy câu hát tương ứng
-                let currentLine = lyricsData[0].text;
-                for (let i = 0; i < lyricsData.length; i++) {
-                    if (currentTime >= lyricsData[i].time) {
-                        currentLine = lyricsData[i].text;
-                    } else {
-                        break;
-                    }
-                }
-
-                if (lyricsText.innerText !== currentLine) {
-                    lyricsText.innerText = currentLine;
-                }
             }, 100);
         }
 
