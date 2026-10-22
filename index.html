@@ -270,7 +270,7 @@
             margin-bottom: 15px;
         }
 
-        /* Ô Chữ Nhật Lớn - Hiển Thị Tiêu Đề Bài Hát Cố Định */
+        /* Ô Chữ Nhật Lớn - Hiển Thị Tiêu Đề Bài Hát Cố Định 100% */
         .lyrics-box {
             background: rgba(0, 0, 0, 0.45);
             border: 1.5px solid rgba(255, 255, 255, 0.6);
@@ -497,7 +497,7 @@
 
         <!-- MUSIC PLAYER WIDGET CHUẨN GIAO DIỆN -->
         <div class="music-widget">
-            <!-- Ô Lớn Hiển Thị Tiêu Đề Bài Hát Cố Định -->
+            <!-- Ô Lớn Hiển Thị Tiêu Đề Bài Hát Cố Định 100% (Không chạy lời nữa) -->
             <div class="lyrics-box">
                 <p class="lyrics-text">🎶 Đang phát: LƯU NIÊN (Duzme Remix)</p>
             </div>
@@ -662,7 +662,7 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- XỬ LÝ TRÌNH PHÁT NHẠC REMIX (LINK YOUTUBE: iFWLSdqeHDE) -->
+    <!-- XỬ LÝ TRÌNH PHÁT NHẠC (ĐÃ XÓA SẠCH LỆNH CẬP NHẬT LỜI NHẠC) -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
@@ -742,7 +742,7 @@
                     String(minutes).padStart(2, '0') + ':' +
                     String(seconds).padStart(2, '0');
 
-                // Cập nhật thanh tiến trình chạy mượt mà theo bài hát
+                // Chỉ cập nhật thanh tiến trình chạy theo bài hát
                 const percent = (currentTime / duration) * 100;
                 progressBar.style.width = percent + '%';
             }, 100);
