@@ -87,55 +87,89 @@
             }
         }
 
-        /* ---------------- WIDGET ĐỒNG HỒ PHÁT SÁNG GÓC PHẢI (BẢN TO NỔI BẬT) ---------------- */
+        /* ---------------- WIDGET ĐỒNG HỒ PHONG CÁCH KÍNH MỜ ĐEN TRẮNG CỰC NÉT ---------------- */
         .clock-widget {
             position: fixed;
-            top: 35px;
-            right: 50px;
+            top: 25px;
+            right: 35px;
             text-align: right;
             z-index: 10;
-            pointer-events: none;
             user-select: none;
+            /* Khung kính mờ tối màu chống chói sáng */
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 22px;
+            padding: 12px 22px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+            transition: all 0.3s ease;
+        }
+
+        .clock-widget:hover {
+            background: rgba(15, 23, 42, 0.65);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
         }
 
         .clock-date {
             font-family: 'Fredoka', 'Poppins', sans-serif;
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 700;
-            letter-spacing: 3px;
-            color: #ffffff;
+            letter-spacing: 2px;
+            color: #cbd5e1; /* Màu xám bạc dịu mắt */
             text-transform: uppercase;
-            text-shadow: 0 0 12px rgba(255, 255, 255, 0.85), 0 0 25px rgba(255, 255, 255, 0.5);
             margin-bottom: 2px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Ngôi sao trắng phát sáng lung linh */
+        .star-glow {
+            color: #ffffff;
+            display: inline-block;
+            text-shadow: 0 0 8px #ffffff, 0 0 15px #ffffff;
+            animation: starPulse 2.5s infinite ease-in-out;
+            margin: 0 1px;
+        }
+
+        @keyframes starPulse {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 2px #fff);
+            }
+            50% {
+                transform: scale(1.25);
+                filter: drop-shadow(0 0 10px #fff);
+            }
         }
 
         .clock-time {
             font-family: 'Mochiy Pop One', 'Fredoka', sans-serif;
-            font-size: 76px;
+            font-size: 64px; /* Kích thước to tròn vừa vặn hoàn hảo */
             font-weight: 700;
             color: #ffffff;
-            line-height: 1.05;
+            line-height: 1;
             display: flex;
             align-items: baseline;
             justify-content: flex-end;
-            text-shadow: 
-                0 0 15px rgba(255, 255, 255, 0.95), 
-                0 0 35px rgba(255, 255, 255, 0.75), 
-                0 0 65px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
         }
 
         .clock-seconds {
-            font-size: 38px;
-            margin-left: 6px;
-            opacity: 0.9;
+            font-size: 32px;
+            margin-left: 5px;
+            color: #94a3b8; /* Kim giây màu xám trắng tương phản nhẹ nhàng */
+            text-shadow: none;
         }
 
         /* Tự co giãn đẹp mắt trên điện thoại */
         @media (max-width: 768px) {
             .clock-widget {
-                top: 20px;
-                right: 20px;
-                transform: scale(0.65);
+                top: 15px;
+                right: 15px;
+                padding: 8px 14px;
+                transform: scale(0.7);
                 transform-origin: top right;
             }
         }
@@ -541,7 +575,7 @@
         <h1 class="enter-text">click to enter</h1>
     </div>
 
-    <!-- WIDGET ĐỒNG HỒ PHÁT SÁNG GÓC PHẢI -->
+    <!-- WIDGET ĐỒNG HỒ PHÁT SÁNG GÓC PHẢI (CÓ KHUNG KÍNH MỜ CHỐNG CHÓI) -->
     <div class="clock-widget">
         <div class="clock-date" id="clockDate">SATURDAY, NOVEMBER 21</div>
         <div class="clock-time">
@@ -634,7 +668,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT CHẠY ĐỒNG HỒ & NGÀY THÁNG CÓ KIM GIÂY -->
+    <!-- SCRIPT CHẠY ĐỒNG HỒ & NGÀY THÁNG VỚI NGÔI SAO PHÁT SÁNG -->
     <script>
         function updateClock() {
             const now = new Date();
@@ -643,16 +677,19 @@
             const months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
             
             let dayName = days[now.getDay()];
+            let dayFormatted = dayName;
+            // Thay chữ A đầu tiên thành ngôi sao phát sáng lấp lánh (VD: S★TURDAY)
             if (dayName.includes('A')) {
-                dayName = dayName.replace('A', '★');
+                dayFormatted = dayName.replace('A', '<span class="star-glow">★</span>');
             }
             
             const monthName = months[now.getMonth()];
             const dateNum = now.getDate();
             
-            const dateStr = `${dayName}, ${monthName} ${dateNum}`;
             const dateElem = document.getElementById("clockDate");
-            if (dateElem) dateElem.innerText = dateStr;
+            if (dateElem) {
+                dateElem.innerHTML = `${dayFormatted}, ${monthName} ${dateNum}`;
+            }
             
             const h = String(now.getHours()).padStart(2, '0');
             const m = String(now.getMinutes()).padStart(2, '0');
@@ -758,7 +795,7 @@
                     if (user.avatar_decoration_data) {
                         const frameAsset = user.avatar_decoration_data.asset;
                         const frameUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${frameAsset}.png`;
-                        const frameElem = document.getElementById('userFrame');
+                        frameElem = document.getElementById('userFrame');
                         frameElem.src = frameUrl;
                         frameElem.style.display = 'block';
                     }
