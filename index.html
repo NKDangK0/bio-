@@ -9,15 +9,22 @@
     
     <!-- Thư viện FontAwesome Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Bổ sung font UnifrakturMaguntia cho chữ 'click to enter' -->
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
+        /* CON TRỎ CHUỘT TÙY CHỈNH: AMONG US NOVISOR */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
+            cursor: url('https://cdn.custom-cursor.com/packs/5257/among-us-novisor-cursor.png'), url('https://cdn.custom-cursor.com/packs/5257/thumbnails/among-us-novisor-cursor-pack.png'), auto !important;
+        }
+
+        /* Khi rê chuột vào các nút, liên kết */
+        a, button, .audio-btn, .disc-wrapper, .progress-container, .social-icons a, #enterOverlay {
+            cursor: url('https://cdn.custom-cursor.com/packs/5257/among-us-novisor-pointer.png'), url('https://cdn.custom-cursor.com/packs/5257/thumbnails/among-us-novisor-cursor-pack.png'), pointer !important;
         }
 
         body {
@@ -32,6 +39,52 @@
             position: relative;
         }
 
+        /* ---------------- MÀN HÌNH CLICK TO ENTER ---------------- */
+        #enterOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9999999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            user-select: none;
+        }
+
+        #enterOverlay.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .enter-text {
+            font-family: 'UnifrakturMaguntia', 'Cinzel', serif;
+            font-size: 32px;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            animation: textBreathe 2s ease-in-out infinite;
+        }
+
+        @keyframes textBreathe {
+            0%, 100% {
+                opacity: 0.6;
+                transform: scale(0.98);
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.02);
+                text-shadow: 0 0 25px rgba(255, 255, 255, 0.95);
+            }
+        }
+
         /* VIDEO NỀN ĐỘNG WANDERING SAMURAI */
         .bg-video {
             position: fixed;
@@ -44,7 +97,7 @@
             pointer-events: none;
         }
 
-        /* Lớp phủ tối mờ nhẹ nền video */
+        /* Lớp phủ tối nhẹ để hình nền trong trẻo và thấy rõ samurai */
         body::before {
             content: '';
             position: fixed;
@@ -52,7 +105,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(15, 23, 42, 0.2);
+            background: rgba(15, 23, 42, 0.12);
             z-index: -998;
             pointer-events: none;
         }
@@ -62,22 +115,21 @@
             position: fixed;
             top: 25px;
             left: 25px;
-            background: rgba(15, 23, 42, 0.5);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(15, 23, 42, 0.35);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             width: 52px;
             height: 52px;
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
             color: #ffffff;
             font-size: 20px;
             transition: all 0.3s ease;
-            z-index: 999999;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            z-index: 99999;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
         .audio-btn:hover { 
@@ -87,18 +139,18 @@
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
         }
 
-        /* KHUNG KÍNH MỜ TRONG SUỐT HOÀN HẢO */
+        /* KHUNG Ở GIỮA ĐÃ ĐƯỢC CHỈNH TRONG SUỐT ĐỂ THẤY NGƯỜI ĐẰNG SAU */
         .card {
             width: 90%;
             max-width: 420px;
-            background: rgba(15, 23, 42, 0.35);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(15, 23, 42, 0.18); /* Trong suốt hơn nhiều để thấy samurai */
+            backdrop-filter: blur(5px);         /* Giảm độ nhòe để nhìn xuyên nền phía sau */
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 24px;
             padding: 25px 20px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
             position: relative;
             z-index: 1;
             max-height: 95vh;
@@ -123,7 +175,6 @@
             object-fit: cover;
         }
 
-        /* Khung trang trí Discord tự động lấy từ API */
         .avatar-frame {
             position: absolute;
             top: 0;
@@ -134,13 +185,11 @@
             display: none;
         }
 
-        /* LINK MỞ HỒ SƠ DISCORD */
         .name-link {
             text-decoration: none;
             display: inline-block;
         }
 
-        /* TÊN CHẠY CHỮ VỚI THỦ THUẬT HIỆU ỨNG TYPEWRITER */
         .name {
             font-family: 'Cinzel', serif;
             font-size: 26px;
@@ -160,7 +209,6 @@
             transform: scale(1.05);
         }
 
-        /* Dấu nháy gõ chữ */
         .cursor {
             display: inline-block;
             margin-left: 2px;
@@ -180,7 +228,7 @@
 
         /* KHUNG STATUS DISCORD */
         .status-box {
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 16px;
             padding: 10px 14px;
             display: flex;
@@ -270,10 +318,9 @@
             margin-bottom: 15px;
         }
 
-        /* Ô Chữ Nhật Lớn - CỐ ĐỊNH DUY NHẤT 1 DÒNG DÙ NHẠC PHÁT TỚI ĐÂU */
         .lyrics-box {
-            background: rgba(0, 0, 0, 0.45);
-            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 20px;
             padding: 18px 15px;
             min-height: 80px;
@@ -281,7 +328,6 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
         .lyrics-text {
@@ -292,10 +338,9 @@
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
         }
 
-        /* Ô Chữ Nhật Nhỏ - Player Control */
         .player-box {
-            background: rgba(0, 0, 0, 0.45);
-            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 22px;
             padding: 12px 18px;
             display: flex;
@@ -309,7 +354,6 @@
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             position: relative;
-            cursor: pointer;
             margin-top: 4px;
         }
 
@@ -354,7 +398,6 @@
             border: none;
             color: #ffffff;
             font-size: 14px;
-            cursor: pointer;
             transition: 0.2s;
         }
 
@@ -363,12 +406,10 @@
             color: #cbd5e1;
         }
 
-        /* Đĩa Nhạc Tròn Xoay */
         .disc-wrapper {
             position: relative;
             width: 42px;
             height: 42px;
-            cursor: pointer;
         }
 
         .disc-img {
@@ -443,6 +484,11 @@
 </head>
 <body>
 
+    <!-- MÀN HÌNH CHÀO CLICK TO ENTER -->
+    <div id="enterOverlay">
+        <h1 class="enter-text">click to enter</h1>
+    </div>
+
     <!-- Video nền động Wandering Samurai -->
     <video autoplay muted loop playsinline class="bg-video">
         <source src="https://motionbgs.com/media/10118/wandering-samurai.960x540.mp4" type="video/mp4">
@@ -455,7 +501,7 @@
     </div>
 
     <!-- Nút Loa Bật/Tắt Nhạc -->
-    <div class="audio-btn" id="audioBtn">
+    <div class="audio-btn" id="audioBtn" title="Bật/Tắt âm thanh">
         <i id="audioIcon" class="fa-solid fa-volume-xmark"></i>
     </div>
 
@@ -491,26 +537,21 @@
 
         <!-- MUSIC PLAYER WIDGET CHUẨN GIAO DIỆN -->
         <div class="music-widget">
-            <!-- Ô CỐ ĐỊNH HOÀN TOÀN KHÔNG ĐỔI CHỮ -->
             <div class="lyrics-box">
                 <p class="lyrics-text">🎶 Đang phát: LƯU NIÊN (Duzme Remix)</p>
             </div>
 
-            <!-- Ô Nhỏ Trình Điều Khiển Nhạc -->
             <div class="player-box">
-                <!-- Thanh tiến trình bài hát -->
                 <div class="progress-container" id="progressContainer">
                     <div class="progress-bar" id="progressBar"></div>
                 </div>
 
-                <!-- Các nút điều khiển & thời gian -->
                 <div class="player-controls">
                     <span class="time-display" id="timeDisplay">00:00:00</span>
 
                     <button class="btn-icon" id="heartBtn"><i class="fa-regular fa-heart"></i></button>
                     <button class="btn-icon" id="prevBtn"><i class="fa-solid fa-backward-step"></i></button>
 
-                    <!-- Đĩa Nhạc Tròn Tự Động Xoay & Bật/Tắt Nhạc -->
                     <div class="disc-wrapper" id="discWrapper" title="Phát/Tạm dừng nhạc">
                         <img src="./images.ico" id="discImg" class="disc-img" alt="Disc">
                     </div>
@@ -528,7 +569,6 @@
             <a href="#" target="_blank" title="Website"><i class="fa-solid fa-globe"></i></a>
         </div>
 
-        <!-- BIỂU TƯỢNG CON MẮT VỚI SỐ VIEW CỐ ĐỊNH 367 -->
         <div class="views">
             <i class="fa-regular fa-eye"></i> <span>367</span>
         </div>
@@ -593,7 +633,7 @@
         animateDisplayName();
     </script>
 
-    <!-- Script kết nối API Discord (Lanyard) -->
+    <!-- SCRIPT KẾT NỐI API DISCORD (LANYARD) -->
     <script>
         const DISCORD_ID = "1514256094090760322";
 
@@ -656,12 +696,13 @@
         setInterval(fetchDiscordData, 10000);
     </script>
 
-    <!-- XỬ LÝ TRÌNH PHÁT NHẠC (ĐÃ XÓA SẠCH LỆNH CẬP NHẬT LỜI NHẠC) -->
+    <!-- XỬ LÝ TRÌNH PHÁT NHẠC VÀ SỰ KIỆN CLICK TO ENTER -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let ytPlayer;
         let isMusicPlaying = false;
         let timerInterval;
+        let hasEntered = false;
 
         const audioBtn = document.getElementById("audioBtn");
         const audioIcon = document.getElementById("audioIcon");
@@ -670,6 +711,7 @@
         const progressBar = document.getElementById("progressBar");
         const timeDisplay = document.getElementById("timeDisplay");
         const heartBtn = document.getElementById("heartBtn");
+        const enterOverlay = document.getElementById("enterOverlay");
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('player', {
@@ -677,7 +719,7 @@
                 width: '0',
                 videoId: 'iFWLSdqeHDE',
                 playerVars: {
-                    'autoplay': 1,
+                    'autoplay': 0,
                     'controls': 0,
                     'loop': 1,
                     'playlist': 'iFWLSdqeHDE'
@@ -690,19 +732,31 @@
         }
 
         function onPlayerReady(event) {
-            event.target.playVideo();
-
-            const autoPlayHandler = () => {
-                if (ytPlayer && typeof ytPlayer.playVideo === 'function' && !isMusicPlaying) {
-                    ytPlayer.playVideo();
-                }
-                document.removeEventListener('click', autoPlayHandler);
-                document.removeEventListener('touchstart', autoPlayHandler);
-            };
-
-            document.addEventListener('click', autoPlayHandler);
-            document.addEventListener('touchstart', autoPlayHandler);
+            // Khi người dùng bấm enter trước khi player sẵn sàng
+            if (hasEntered) {
+                event.target.playVideo();
+            }
         }
+
+        function enterBio() {
+            if (hasEntered) return;
+            hasEntered = true;
+
+            // Ẩn màn hình click to enter mượt mà
+            enterOverlay.classList.add("hide");
+            setTimeout(() => {
+                enterOverlay.style.display = "none";
+            }, 800);
+
+            // Tự động phát nhạc ngay khi click
+            if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+                ytPlayer.playVideo();
+            }
+        }
+
+        // Bắt sự kiện click vào màn hình click to enter
+        enterOverlay.addEventListener("click", enterBio);
+        enterOverlay.addEventListener("touchstart", enterBio);
 
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.PLAYING) {
@@ -726,7 +780,6 @@
                 const currentTime = ytPlayer.getCurrentTime();
                 const duration = ytPlayer.getDuration() || 1;
 
-                // Định dạng thời gian 00:00:00
                 const hours = Math.floor(currentTime / 3600);
                 const minutes = Math.floor((currentTime % 3600) / 60);
                 const seconds = Math.floor(currentTime % 60);
@@ -736,7 +789,6 @@
                     String(minutes).padStart(2, '0') + ':' +
                     String(seconds).padStart(2, '0');
 
-                // Chỉ cập nhật thanh tiến trình chạy mượt mà theo bài hát
                 const percent = (currentTime / duration) * 100;
                 progressBar.style.width = percent + '%';
             }, 100);
