@@ -13,18 +13,18 @@
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* CON TRỎ CHUỘT TÙY CHỈNH: AMONG US NOVISOR */
+        /* CON TRỎ CHUỘT TÙY CHỈNH THEO FILE ArrowFarCursor.png */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
-            cursor: url('https://cdn.custom-cursor.com/packs/5257/among-us-novisor-cursor.png'), url('https://cdn.custom-cursor.com/packs/5257/thumbnails/among-us-novisor-cursor-pack.png'), auto !important;
+            cursor: url('./ArrowFarCursor.png') 64 63, auto !important;
         }
 
         /* Khi rê chuột vào các nút, liên kết */
         a, button, .audio-btn, .disc-wrapper, .progress-container, .social-icons a, #enterOverlay {
-            cursor: url('https://cdn.custom-cursor.com/packs/5257/among-us-novisor-pointer.png'), url('https://cdn.custom-cursor.com/packs/5257/thumbnails/among-us-novisor-cursor-pack.png'), pointer !important;
+            cursor: url('./ArrowFarCursor.png') 64 63, pointer !important;
         }
 
         body {
@@ -732,7 +732,6 @@
         }
 
         function onPlayerReady(event) {
-            // Khi người dùng bấm enter trước khi player sẵn sàng
             if (hasEntered) {
                 event.target.playVideo();
             }
