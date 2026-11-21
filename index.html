@@ -9,25 +9,28 @@
     
     <!-- Thư viện FontAwesome Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <!-- Google Fonts: Bổ sung font UnifrakturMaguntia cho chữ 'click to enter' -->
+    <!-- Google Fonts: UnifrakturMaguntia cho chữ click to enter -->
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* CON TRỎ CHUỘT TÙY CHỈNH THEO FILE ArrowFarCursor.png */
-        *, *::before, *::after {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            cursor: url('./ArrowFarCursor.png') 0 0, auto !important;
+        }
+
+        /* CON TRỎ CHUỘT CHUẨN 32x32: NHỎ GỌN, KHÔNG BỊ GIẬT MÉP, CLICK CHÍNH XÁC ĐẦU NGÓN TAY */
+        html, body, * {
+            cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAQ+SURBVFhH7ZbLU5tVGMYhgSaBkFAgKQkBwi00lZRQbuFWLiUUA4RLuF/DJQUCSjtatRcR66XOdLqoOs64cHTlH1AXXpZuunLGhQs3btw4upA6o850tN/j854Y9yChLnxmfpN8OYf3PLznvO930v5LyiJRYlVPT0CjBGRXPT0BfWA0ZiE9Pf0hv9clkjo+pZMHzW39qPL4JQtfEbMMHJf05Ovu3nEsrF2HNbdATHxMMmTwuPTFU2cDiF+5o4UjMRiN2WLincTQ8ShuyspBZGZb29x5CxcH5pF5wiAm7iaGUy8T+dJR5Mbi2nVt/dk30ReaS5p4m+hkUqrlJd9XVddieeMVrD/zBvoG5mAwmsTER8Qgk1KtDvKzz9+K1c1XEdt+HQMjK8ix5IqJT0ihTEq1BslvdQ1d/5gYm96Gze4UE9+QepmUao2TR+eaesSEthq/hdnoVc3pqhATPxHpnCnXEvmjsSWIta1bWNnYQ8/FRbiKveyYuj85dpu4ZWIqNUJ+8fnPo6l1CO7yOhQ6KjUD2/bfFSKt+x458iqRLjhMpAT3dboMFNhdqKr2ozHQi0EezMm5HXQHx3EiYeQKOVLtSWB3xRm0dIQwMrHO/nANazwLKyzRqfnn+HwDGzu3tUB7vxjYJ2fUXx5CDeQ9Iv1fPvvIA399p/QCbW3rNSzFbmJ89jLCkQ2Ewqs43zOJYGgJS5duIrr+MhxOt5i4T+TFdmBFCCzWfFRU+eSVrPH5UVdvBDG1+A0uvKkWZyVIp1RMzF3G/MpLqlSHxmLIyMgUE9MS8DCKGwymx+HIJTQ0B+WUq/eBpHtm8Xm14DL/09XNPWVoYfWa+pTf5btsjTQvxvmO5KmIh9CHTr4LwpE4LBYbBoajmFm6ytTvKCOyDcHQAkYmtxBl6pOZSJqTeSZTjpi4kwh3cHnlRtQQ6GfXK1EnXVI/G31BGXGX10Cnz1TlmFg4kQFBZYN4vM1i4FfSqCIeQvedLg/ybcXo7B3D00MxtXgovIy8/CKYc/JQWd3EqthmVnZV+pPbMbf8IismwguNXUx8TjJVxANqN9ucy/Kr1QpsLjiKKri3negKzqKjZwYlZTU4medAe9cUpnk2xIRsh2zR8EQcja3DnN+dPJDziZAHk598m20+yYqopxG/Zrbkw2q145SjjJViY+MxosTto6EphMc3VTUMjq6juW0YgfZReH3t0OszxMCYingI2cm7Op0epeU+Bh7RvDVtqPDUo6a2WyEGC52VrJhBjo+isWWIi4/h7LkLvD+o65zcH/51e14kD4tLT6Onb5qXk0X0D0YRHIiKKbbmEu63jWeiAbX1vZrHG4DBkCWLf0pyJMBRSLqi1PaPer1+32y2PLafcqG4tBqe080oq6yDKcuSTLnwPjnyK30+KSU15ALZItK2f5C654H7nd8/I/3kWFVCpPU2qaf/dWClpf0F7gHYL2nHmlcAAAAASUVORK5CYII=') 3 1, auto !important;
         }
 
         /* Khi rê chuột vào các nút, liên kết */
         a, button, .audio-btn, .disc-wrapper, .progress-container, .social-icons a, #enterOverlay {
-            cursor: url('./ArrowFarCursor.png') 0 0, pointer !important;
+            cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAQ+SURBVFhH7ZbLU5tVGMYhgSaBkFAgKQkBwi00lZRQbuFWLiUUA4RLuF/DJQUCSjtatRcR66XOdLqoOs64cHTlH1AXXpZuunLGhQs3btw4upA6o850tN/j854Y9yChLnxmfpN8OYf3PLznvO930v5LyiJRYlVPT0CjBGRXPT0BfWA0ZiE9Pf0hv9clkjo+pZMHzW39qPL4JQtfEbMMHJf05Ovu3nEsrF2HNbdATHxMMmTwuPTFU2cDiF+5o4UjMRiN2WLincTQ8ShuyspBZGZb29x5CxcH5pF5wiAm7iaGUy8T+dJR5Mbi2nVt/dk30ReaS5p4m+hkUqrlJd9XVddieeMVrD/zBvoG5mAwmsTER8Qgk1KtDvKzz9+K1c1XEdt+HQMjK8ix5IqJT0ihTEq1BslvdQ1d/5gYm96Gze4UE9+QepmUao2TR+eaesSEthq/hdnoVc3pqhATPxHpnCnXEvmjsSWIta1bWNnYQ8/FRbiKveyYuj85dpu4ZWIqNUJ+8fnPo6l1CO7yOhQ6KjUD2/bfFSKt+x458iqRLjhMpAT3dboMFNhdqKr2ozHQi0EezMm5HXQHx3EiYeQKOVLtSWB3xRm0dIQwMrHO/nANazwLKyzRqfnn+HwDGzu3tUB7vxjYJ2fUXx5CDeQ9Iv1fPvvIA399p/QCbW3rNSzFbmJ89jLCkQ2Ewqs43zOJYGgJS5duIrr+MhxOt5i4T+TFdmBFCCzWfFRU+eSVrPH5UVdvBDG1+A0uvKkWZyVIp1RMzF3G/MpLqlSHxmLIyMgUE9MS8DCKGwymx+HIJTQ0B+WUq/eBpHtm8Xm14DL/09XNPWVoYfWa+pTf5btsjTQvxvmO5KmIh9CHTr4LwpE4LBYbBoajmFm6ytTvKCOyDcHQAkYmtxBl6pOZSJqTeSZTjpi4kwh3cHnlRtQQ6GfXK1EnXVI/G31BGXGX10Cnz1TlmFg4kQFBZYN4vM1i4FfSqCIeQvedLg/ybcXo7B3D00MxtXgovIy8/CKYc/JQWd3EqthmVnZV+pPbMbf8IismwguNXUx8TjJVxANqN9ucy/Kr1QpsLjiKKri3negKzqKjZwYlZTU4medAe9cUpnk2xIRsh2zR8EQcja3DnN+dPJDziZAHk598m20+yYqopxG/Zrbkw2q145SjjJViY+MxosTto6EphMc3VTUMjq6juW0YgfZReH3t0OszxMCYingI2cm7Op0epeU+Bh7RvDVtqPDUo6a2WyEGC52VrJhBjo+isWWIi4/h7LkLvD+o65zcH/51e14kD4tLT6Onb5qXk0X0D0YRHIiKKbbmEu63jWeiAbX1vZrHG4DBkCWLf0pyJMBRSLqi1PaPer1+32y2PLafcqG4tBqe080oq6yDKcuSTLnwPjnyK30+KSU15ALZItK2f5C654H7nd8/I/3kWFVCpPU2qaf/dWClpf0F7gHYL2nHmlcAAAAASUVORK5CYII=') 3 1, pointer !important;
         }
 
         body {
+            font-family: 'Poppins', sans-serif;
             width: 100vw;
             height: 100vh;
             display: flex;
@@ -143,8 +146,8 @@
         .card {
             width: 90%;
             max-width: 420px;
-            background: rgba(15, 23, 42, 0.18); /* Trong suốt hơn nhiều để thấy samurai */
-            backdrop-filter: blur(5px);         /* Giảm độ nhòe để nhìn xuyên nền phía sau */
+            background: rgba(15, 23, 42, 0.18);
+            backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 24px;
