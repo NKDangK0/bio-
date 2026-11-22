@@ -81,7 +81,7 @@
             }
         }
 
-        /* VIDEO NỀN ĐỘNG WANDERING SAMURAI */
+        /* VIDEO NỀN ĐỘNG WANDERING SAMURAI GỐC CHUẨN */
         .bg-video {
             position: fixed;
             top: 0;
@@ -105,7 +105,7 @@
             pointer-events: none;
         }
 
-        /* NÚT LOA */
+        /* NÚT BẬT/TẮT ÂM THANH */
         .audio-btn {
             position: fixed;
             top: 25px;
@@ -274,7 +274,7 @@
             perspective: 1200px;
         }
 
-        /* ---------------- CẶP CÁNH THIÊN THẦN & ÁC QUỶ (LINK CDN MỚI) ---------------- */
+        /* ---------------- CẶP CÁNH THIÊN THẦN & ÁC QUỶ ---------------- */
         .wing {
             position: absolute;
             width: 320px;
@@ -282,21 +282,21 @@
             pointer-events: auto;
             z-index: 0;
             transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s ease;
-            opacity: 0.95;
+            opacity: 0.96;
             user-select: none;
         }
 
-        /* CÁNH ÁC QUỶ BÊN TRÁI */
+        /* CÁNH ÁC QUỶ BÊN TRÁI (MÀU ĐEN TUYỀN HUYỀN BÍ) */
         .wing-demon {
             top: 20px;
             right: calc(100% - 75px);
-            background: url('https://iili.io/oK5dVa4.png') no-repeat center center / contain;
+            background: url('https://iili.io/oK5mUdB.png') no-repeat center center / contain;
             transform-origin: right 45%;
             animation: flapDemon 4.2s ease-in-out infinite;
-            filter: drop-shadow(0 0 22px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 10px rgba(100, 116, 139, 0.3));
+            filter: drop-shadow(0 0 16px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 28px rgba(0, 0, 0, 0.85));
         }
 
-        /* CÁNH THIÊN THẦN BÊN PHẢI */
+        /* CÁNH THIÊN THẦN BÊN PHẢI (MÀU TRẮNG BẠC TỎA SÁNG) */
         .wing-angel {
             top: 20px;
             left: calc(100% - 75px);
@@ -696,11 +696,14 @@
             gap: 4px;
         }
 
+        /* KHUNG PHÁT YOUTUBE ẨN CHUẨN */
         #youtube-audio-player {
-            position: absolute;
+            position: fixed;
             top: -9999px;
             left: -9999px;
-            visibility: hidden;
+            width: 1px;
+            height: 1px;
+            opacity: 0.01;
             pointer-events: none;
         }
     </style>
@@ -712,9 +715,9 @@
         <div class="enter-text">click to enter...</div>
     </div>
 
-    <!-- VIDEO NỀN ĐỘNG -->
+    <!-- VIDEO NỀN ĐỘNG WANDERING SAMURAI CHUẨN GỐC -->
     <video class="bg-video" autoplay loop muted playsinline>
-        <source src="https://files.catbox.moe/u8x30z.mp4" type="video/mp4">
+        <source src="https://motionbgs.com/media/10118/wandering-samurai.960x540.mp4" type="video/mp4">
     </video>
 
     <!-- NÚT BẬT TẮT ÂM THANH -->
@@ -740,9 +743,9 @@
 
     <!-- KHUNG BAO CHỨA CẢ CARD VÀ CẶP CÁNH -->
     <div class="bio-wrapper">
-        <!-- CÁNH ÁC QUỶ BÊN TRÁI -->
+        <!-- CÁNH ÁC QUỶ BÊN TRÁI (MÀU ĐEN TUYỀN) -->
         <div class="wing wing-demon" id="wingDemon" title="Demon Wing"></div>
-        <!-- CÁNH THIÊN THẦN BÊN PHẢI -->
+        <!-- CÁNH THIÊN THẦN BÊN PHẢI (MÀU TRẮNG BẠC) -->
         <div class="wing wing-angel" id="wingAngel" title="Angel Wing"></div>
 
         <div class="card">
@@ -820,10 +823,11 @@
         </div>
     </div>
 
+    <!-- YOUTUBE PLAYER CONTAINER -->
     <div id="youtube-audio-player"></div>
 
     <script>
-        const YT_VIDEO_ID = 'y-ZgVzQ6_tE';
+        const YT_VIDEO_ID = 'iFWLSdqeHDE';
         let ytPlayer = null;
         let isYtReady = false;
         let isAudioPlaying = false;
@@ -966,7 +970,7 @@
             }
         });
 
-        /* ĐỒNG HỒ REAL-TIME CHẠY LIÊN TỤC VÀ TÍNH KIM GIÂY */
+        /* ĐỒNG HỒ REAL-TIME */
         const dayNames = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
         const monthNames = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
