@@ -224,7 +224,7 @@
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
         }
 
-        /* ---------------- KHUNG BAO TOÀN DIỆN CARD & CÁNH ---------------- */
+        /* ---------------- KHUNG BAO CHỨA CẢ CARD VÀ CÁNH ---------------- */
         .bio-wrapper {
             position: relative;
             display: flex;
@@ -236,7 +236,7 @@
             perspective: 1200px;
         }
 
-        /* ---------------- CẶP CÁNH THIÊN THẦN & ÁC QUỶ ---------------- */
+        /* ---------------- CẶP CÁNH THIÊN THẦN & ÁC QUỶ (TỰ ĐỘNG LOAD LINK ONLINE) ---------------- */
         .wing {
             position: absolute;
             width: 320px;
@@ -252,7 +252,7 @@
         .wing-demon {
             top: 20px;
             right: calc(100% - 75px);
-            background: url('./wing-demon.png') no-repeat center center / contain;
+            background: url('https://files.catbox.moe/xkouh6.png') no-repeat center center / contain;
             transform-origin: right 45%;
             animation: flapDemon 4.2s ease-in-out infinite;
             filter: drop-shadow(0 0 22px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 10px rgba(100, 116, 139, 0.3));
@@ -262,7 +262,7 @@
         .wing-angel {
             top: 20px;
             left: calc(100% - 75px);
-            background: url('./wing-angel.png') no-repeat center center / contain;
+            background: url('https://files.catbox.moe/a37fqb.png') no-repeat center center / contain;
             transform-origin: left 45%;
             animation: flapAngel 4.2s ease-in-out infinite;
             filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.85)) drop-shadow(0 0 35px rgba(255, 255, 255, 0.4));
@@ -299,7 +299,7 @@
             }
         }
 
-        /* ẨN HOẶC THU NHỎ CÁNH TRÊN ĐIỆN THOẠI ĐỂ KHÔNG BỊ TRÀN MÀN HÌNH */
+        /* ẨN HOẶC THU NHỎ CÁNH TRÊN MÀN HÌNH NHỎ */
         @media (max-width: 960px) {
             .wing {
                 width: 220px;
@@ -316,7 +316,7 @@
 
         @media (max-width: 650px) {
             .wing {
-                display: none; /* Màn hình điện thoại dọc hẹp thì ẩn cánh để giao diện gọn gàng */
+                display: none;
             }
         }
 
@@ -333,7 +333,7 @@
             text-align: center;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
             position: relative;
-            z-index: 2; /* Luôn đè lên trên khớp cánh */
+            z-index: 2;
             max-height: 95vh;
             overflow-y: auto;
         }
